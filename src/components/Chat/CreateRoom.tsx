@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import Modal from "../Modal";
-import { api, token } from "../../services/api";
+import { axiosInstance } from "../../services/axios";
 
 interface CreateRoomInfo {
   name: string;
@@ -32,13 +32,7 @@ const CreateRoom: React.FC<CreateRoomProps> = ({
   const createRoomHandler = async (e: FormEvent) => {
     e.preventDefault();
 
-    const response = await fetch(
-      `${api}chat/api/v1/room?authorization=${token}`,
-      {
-        method: "POST",
-        body: JSON.stringify(createRoomInfo),
-      }
-    );
+    const response = await axiosInstance.post(`/chat/api/v1/room`,createRoomInfo) 
 
     if (response.status === 200) {
       // Handle success

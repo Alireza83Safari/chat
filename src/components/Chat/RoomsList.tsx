@@ -18,7 +18,7 @@ const RoomsList: React.FC = () => {
   return (
     <>
       <nav className="fixed top-0 left-0 bottom-0 min-h-screen sm:w-[30%] w-[20%] overflow-y-auto bg-white">
-        <div className="sticky top-0 md:px-4 px-2 text-black-800">
+        <div className="sticky top-0 md:px-4 px-2 text-black">
           <div className="flex justify-between border-b border-gray-200 pb-6 pt-3">
             <div className="flex">
               <img
@@ -48,7 +48,7 @@ const RoomsList: React.FC = () => {
           </div> */}
         </div>
 
-        <div className="overflow-auto  text-black-800">
+        <div className="overflow-auto  text-black">
           {roomsArray?.map((item: RoomType) => (
             <Link
               to={`/room?roomId=${item.room.id}`}

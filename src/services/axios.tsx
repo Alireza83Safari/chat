@@ -5,7 +5,7 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-axiosInstance.interceptors.request.use(
+/* axiosInstance.interceptors.request.use(
   function (config) {
     const token = localStorage.getItem("Authorization");
     if (token) {
@@ -16,7 +16,7 @@ axiosInstance.interceptors.request.use(
   function (error) {
     return Promise.reject(error);
   }
-);
+); */
 
 /* userAxios.interceptors.response.use(
   function (response) {

@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { RoomType } from "../types/room.type";
 import { MessageType } from "../types/message.type";
-import { token } from "../services/api";
+import { socket } from "../services/socket";
 
 export type ChatContextProviderType = {
   children: React.ReactNode;
@@ -18,10 +18,6 @@ export const ChatContext = createContext<ChatContextType | null>(null);
 export const ChatContextProvider = ({ children }: ChatContextProviderType) => {
   const [rooms, setRooms] = useState<Record<string, RoomType>>({});
   const [messages, setMessages] = useState([]);
-
-  const socket = new WebSocket(
-    `ws://localhost:3000/chat/ws/public?authorization=${token}`
-  );
 
   const saveRoomData = (data: RoomType) => {
     setRooms((prevrooms: any) => ({
@@ -42,7 +38,6 @@ export const ChatContextProvider = ({ children }: ChatContextProviderType) => {
       },
     }));
   }
-  //console.log(rooms);
 
   useEffect(() => {
     socket.addEventListener("open", (event) => {
@@ -56,7 +51,6 @@ export const ChatContextProvider = ({ children }: ChatContextProviderType) => {
     socket.addEventListener("message", (event) => {
       const res = JSON.parse(event.data);
       const content = JSON.parse(res.content);
-     // console.log(content);
 
       switch (res.type) {
         case "room-detail":
@@ -69,9 +63,6 @@ export const ChatContextProvider = ({ children }: ChatContextProviderType) => {
           console.warn("Unknown message type:", res.type);
       }
     });
-    return () => {
-      socket.close();
-    };
   }, []);
 
   return (

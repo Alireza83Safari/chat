@@ -1,88 +1,77 @@
-import React, { useState } from "react";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import React, { useContext, useState } from "react";
 import { FaRegClone, FaReply, FaTrashAlt } from "react-icons/fa";
+import { AuthContext, AuthContextType } from "../../context/AuthContext";
+import { MessageType } from "../../types/message.type";
 
 interface MessageProps {
-  text: string;
-  sender: string;
-  timestamp: string;
-  id: string;
+  message: MessageType;
   setReplyId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Message: React.FC<MessageProps> = ({
-  text,
-  sender,
-  timestamp,
-  id,
-  setReplyId,
-}) => {
-  const isUser = sender === "user";
+const Message: React.FC<MessageProps> = ({ message, setReplyId }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+  const { userInfo } = useContext(AuthContext) as AuthContextType;
 
   return (
-    <div className="flex items-start gap-2.5 my-5" key={id}>
-      <img
-        className="w-8 h-8 rounded-full"
-        src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-        alt="Jese image"
-      />
+    <div className="relative">
       <div
-        className={`flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 rounded-e-xl text-white rounded-es-xl ${
-          isUser ? `bg-[#A2CDFF]` : `bg-[#0275FF]`
+        className={`chat text-black relative ${
+          userInfo?.userId === message?.userId ? "chat-start" : "chat-end"
         }`}
       >
-        <div className="flex items-center space-x-2 rtl:space-x-reverse">
-          <span className="text-sm font-semibold text-gray-900">
-            Bonnie Green
-          </span>
-          <span className="text-sm font-normal">{timestamp}</span>
+        <div className="chat-image avatar">
+          <div className="w-10 rounded-full">
+            <img
+              alt="Tailwind CSS chat bubble component"
+              src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+            />
+          </div>
         </div>
-        <p className="text-sm font-normal py-2.5 text-gray-900">{text}</p>
-        <span className="text-sm font-normal">Delivered</span>
-      </div>
-
-      <button
-        className="self-center items-center p-2 text-sm"
-        type="button"
-        onClick={toggleDropdown}
-      >
-        <BsThreeDotsVertical className="text-2xl text-black-800" />
-      </button>
-
-      <div
-        className={`z-10 ${
-          isDropdownOpen ? "" : "hidden"
-        } bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600`}
-      >
-        <ul
-          className="py-2 text-sm text-gray-700 dark:text-gray-200 cursor-pointer"
-          aria-labelledby="dropdownMenuIconButton"
-        >
-          <li
-            className="flex px-4 py-2 hover:text-[#0275FF] duration-300"
-            onClick={() => {
-              setReplyId(id);
-              setIsDropdownOpen(false);
-            }}
+        <div className="chat-header mt-2">
+          username
+          <time className="text-xs opacity-50 ml-2">
+            {message?.createdAt?.slice(11, 16)}
+          </time>
+        </div>
+        <div className="relative flex">
+          <div
+            className="chat-bubble bg-white text-black"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            <FaReply className="mr-2 mt-1" />
-            Reply
-          </li>
+            {message?.content}
+          </div>
+          <div
+            className={`z-10 absolute -right-36 ${
+              isDropdownOpen ? "" : "hidden"
+            } bg-gradient-to-r from-gray-100 to-stone-100 rounde-lg shadow w-40`}
+          >
+            <ul
+              className="py-2 text-sm text-black cursor-pointer"
+              aria-labelledby="dropdownMenuIconButton"
+            >
+              <li
+                className="flex px-4 py-2 hover:text-[#0275FF] duration-300"
+                onClick={() => {
+                  setReplyId(message?.id);
+                  setIsDropdownOpen(false);
+                }}
+              >
+                <FaReply className="mr-2 mt-1" />
+                Reply
+              </li>
 
-          <li className="flex px-4 py-2 hover:text-[#0275FF] duration-300">
-            <FaRegClone className="mr-2 mt-1" />
-            Copy
-          </li>
-          <li className="flex px-4 py-2 hover:text-[#0275FF] duration-300">
-            <FaTrashAlt className="mr-2 mt-1" />
-            Delete
-          </li>
-        </ul>
+              <li className="flex px-4 py-2 hover:text-[#0275FF] duration-300">
+                <FaRegClone className="mr-2 mt-1" />
+                Copy
+              </li>
+              <li className="flex px-4 py-2 hover:text-[#0275FF] duration-300">
+                <FaTrashAlt className="mr-2 mt-1" />
+                Delete
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="chat-footer opacity-50">Delivered</div>
       </div>
     </div>
   );

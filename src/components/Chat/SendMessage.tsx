@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { IoMdSend } from "react-icons/io";
 import { ChatContext, ChatContextType } from "../../context/ChatContext";
-import { token } from "../../services/api";
 import { useLocation } from "react-router-dom";
 import { FaReply } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
+import { socket } from "../../services/socket";
 
 interface SendMessageProps {
   replyId: string;
@@ -14,10 +14,6 @@ interface SendMessageProps {
 const SendMessage: React.FC<SendMessageProps> = ({ replyId, setReplyId }) => {
   const { updateRoomMessage } = useContext(ChatContext) as ChatContextType;
   const [newMessage, setNewMessage] = useState("");
-
-  const socket = new WebSocket(
-    `ws://localhost:3000/chat/ws/public?authorization=${token}`
-  );
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const roomId = searchParams.get("roomId");
