@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { api } from "../services/api";
 import { Link, useNavigate } from "react-router-dom";
+import { axiosInstance } from "../services/axios";
 
 interface LoginData {
   username: string;
@@ -22,13 +22,12 @@ const Login: React.FC = () => {
   const loginHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const response = await fetch(`${api}auth/api/v1/login`, {
-      method: "POST",
-      body: JSON.stringify(loginData),
-    });
-    console.log(response);
+    const data = await axiosInstance.post(`/auth/api/v1/login`, loginData);
 
-    if (response.status === 200) {
+    if (data.status === 200) {
+      localStorage.setItem("Authorization", data?.data?.token);
+      const expireTime = new Date(data?.data?.expiresAt);
+      document.cookie = `Authorization= ${data?.data?.token} ; expires=${expireTime}; secure; path=/; `;
       navigate("/room");
     }
   };

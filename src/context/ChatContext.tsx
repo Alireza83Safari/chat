@@ -42,7 +42,7 @@ export const ChatContextProvider = ({ children }: ChatContextProviderType) => {
       },
     }));
   }
-  console.log(rooms);
+  //console.log(rooms);
 
   useEffect(() => {
     socket.addEventListener("open", (event) => {
@@ -56,7 +56,7 @@ export const ChatContextProvider = ({ children }: ChatContextProviderType) => {
     socket.addEventListener("message", (event) => {
       const res = JSON.parse(event.data);
       const content = JSON.parse(res.content);
-      console.log(content);
+     // console.log(content);
 
       switch (res.type) {
         case "room-detail":

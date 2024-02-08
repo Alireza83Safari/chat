@@ -1,6 +1,8 @@
 import { useLocation, useNavigate, useRoutes } from "react-router-dom";
 import routes from "./routes/route";
 import { useEffect } from "react";
+import { AuthContextProvider } from "./context/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
   const history = useLocation();
@@ -12,5 +14,10 @@ export default function App() {
     }
   }, [history]);
   const router = useRoutes(routes);
-  return <>{router}</>;
+  return (
+    <AuthContextProvider>
+      {router}
+      <Toaster />
+    </AuthContextProvider>
+  );
 }
