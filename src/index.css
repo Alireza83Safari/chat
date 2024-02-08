@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Apply custom styles to the whole scrollbar */
+::-webkit-scrollbar {
+  width: 1px; /* Set the width of the scrollbar */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Change the background color on hover */
+}
+
+/* Handle on the scrollbar */
+::-webkit-scrollbar-thumb {
+  background: #888; /* Set the color of the scrollbar handle */
+  border-radius: 6px; /* Set the border radius of the scrollbar handle */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Set the color of the scrollbar track */
+}
+
+/* Handle when it's grabbing (clicked and being dragged) */
+::-webkit-scrollbar-thumb:active {
+  background: #555; /* Change the background color when the handle is being dragged */
+}
