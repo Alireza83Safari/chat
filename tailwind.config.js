@@ -4,11 +4,7 @@ export default {
   theme: {
     extend: {},
     colors: {
-      black: {
-        200: "#444448",
-        800: "#1E1F22",
-      },
-      gray: { 200: "#7F8388" },
+      ...require("tailwindcss/colors"),
       white: "#FFFFFF",
     },
   },
