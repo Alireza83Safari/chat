@@ -17,10 +17,10 @@ export const ChatContext = createContext<ChatContextType | null>(null);
 
 export const ChatContextProvider = ({ children }: ChatContextProviderType) => {
   const [rooms, setRooms] = useState<Record<string, RoomType>>({});
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<MessageType[]>([]);
 
   const saveRoomData = (data: RoomType) => {
-    setRooms((prevrooms: any) => ({
+    setRooms((prevrooms: Record<string, RoomType>) => ({
       ...prevrooms,
       [data.room.id]: {
         room: data.room,
@@ -51,6 +51,7 @@ export const ChatContextProvider = ({ children }: ChatContextProviderType) => {
     socket.addEventListener("message", (event) => {
       const res = JSON.parse(event.data);
       const content = JSON.parse(res.content);
+      console.log(content);
 
       switch (res.type) {
         case "room-detail":
@@ -59,6 +60,7 @@ export const ChatContextProvider = ({ children }: ChatContextProviderType) => {
           break;
         case "new-message":
           break;
+
         default:
           console.warn("Unknown message type:", res.type);
       }

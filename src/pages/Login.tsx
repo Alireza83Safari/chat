@@ -1,7 +1,8 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { axiosInstance } from "../services/axios";
 import toast from "react-hot-toast";
+import { AuthContext, AuthContextType } from "../context/AuthContext";
 
 interface LoginData {
   username: string;
@@ -9,6 +10,7 @@ interface LoginData {
 }
 
 const Login: React.FC = () => {
+  const { checkUserLoginStatus } = useContext(AuthContext) as AuthContextType;
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState<LoginData>({
@@ -30,6 +32,7 @@ const Login: React.FC = () => {
         toast.success("login is successfully");
         const expireTime = new Date(data?.data?.data?.expiresAt);
         document.cookie = `Authorization= ${data?.data?.data?.token} ; expires=${expireTime}; secure; path=/; `;
+        checkUserLoginStatus();
         navigate("/room");
       }
     } catch (error) {

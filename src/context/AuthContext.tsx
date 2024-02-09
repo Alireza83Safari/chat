@@ -1,10 +1,12 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../services/axios";
+import { UserType } from "../types/user.type";
 
 export type AuthContextType = {
-  isLogin: boolean;
-  userInfo: any;
+  isLoggedIn: boolean;
+  userInfo: UserType;
+  checkUserLoginStatus: () => Promise<void>;
 };
 
 type AuthContextProviderProps = {
@@ -15,32 +17,33 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(false);
-  const [userInfo, setUserInfo] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState() as any;
 
-  const isAuthHandler = async () => {
+  const checkUserLoginStatus = async () => {
     try {
       const data = await axiosInstance.get("/user/api/v1/profile");
-      console.log(data);
 
       if (data.status === 200) {
         setUserInfo(data?.data?.data);
-        setIsLogin(true);
+        setIsLoggedIn(true);
       }
     } catch (error) {
       if (error) {
-        setIsLogin(false);
+        setIsLoggedIn(false);
       }
       navigate("/login");
     }
   };
 
   useEffect(() => {
-    isAuthHandler();
+    checkUserLoginStatus();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLogin, userInfo }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, userInfo, checkUserLoginStatus }}
+    >
       {children}
     </AuthContext.Provider>
   );

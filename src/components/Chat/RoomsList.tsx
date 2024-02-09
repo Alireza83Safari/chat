@@ -37,15 +37,6 @@ const RoomsList: React.FC = () => {
               <FaPlus className="mr-2 text-xl" />
             </button>
           </div>
-
-          {/*     <div className="relative mt-6 sm:block hidden">
-            <input
-              type="text"
-              className="pl-8 rounded-lg min-w-full py-3 w-[100%] bg-[#E9E9E9] mb-3"
-              placeholder="search here.."
-            />
-            <FaSearch className="absolute left-2 top-4" />
-          </div> */}
         </div>
 
         <div className="overflow-auto  text-black">
@@ -54,7 +45,7 @@ const RoomsList: React.FC = () => {
               to={`/room?roomId=${item.room.id}`}
               className={`py-3 flex justify-between px-2 items-center ${
                 !!roomId && roomId === String(item.room.id)
-                  ? ` bg-[#E9E9E9]`
+                  ? `bg-indigo-100`
                   : ``
               }`}
               key={item.room.id}

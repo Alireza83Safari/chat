@@ -36,7 +36,6 @@ const ChatRoom: React.FC = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-  console.log(messages);
 
   return (
     <div className="bg-[#E9E9E9] fixed right-0 bottom-0 top-0 min-h-[20rem] sm:w-[70%] w-[80%] overflow-y-auto ">

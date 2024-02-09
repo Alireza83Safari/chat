@@ -41,9 +41,7 @@ const SendMessage: React.FC<SendMessageProps> = ({ replyId, setReplyId }) => {
           updateRoomMessage(content?.roomId, content?.data);
       }
     });
-    return () => {
-      socket.close();
-    };
+ 
   }, []);
 
   const handleSendMessage = () => {

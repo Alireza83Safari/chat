@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
-import { FaRegClone, FaReply, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaRegClone, FaReply, FaTrashAlt } from "react-icons/fa";
 import { AuthContext, AuthContextType } from "../../context/AuthContext";
 import { MessageType } from "../../types/message.type";
 import toast from "react-hot-toast";
+import { sendMessage } from "../../services/socket";
+import { useLocation } from "react-router-dom";
 
 interface MessageProps {
   message: MessageType;
@@ -12,17 +14,40 @@ interface MessageProps {
 const Message: React.FC<MessageProps> = ({ message, setReplyId }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { userInfo } = useContext(AuthContext) as AuthContextType;
+  const [editId, setEditId] = useState("");
+  const [editMessage, setEditMeesage] = useState("");
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const roomId = searchParams.get("roomId");
 
   const handleClipbord = (text: string) => {
     navigator.clipboard.writeText(text);
     toast.success("copy message");
     setIsDropdownOpen(false);
   };
+
+  const deleteMessage = (id: string) => {
+    sendMessage("delete-message", {
+      roomId: roomId,
+      id: id,
+    });
+  };
+
+  const editMessageHandler = (id: string) => {
+    sendMessage("edit-message", {
+      roomId: roomId,
+      id: id,
+      content: "content",
+    });
+  };
+
+  const isUser = userInfo?.id === message?.userId;
+
   return (
     <div className="relative">
       <div
         className={`chat text-black relative ${
-          userInfo?.id === message?.userId ? "chat-start" : "chat-end"
+          isUser ? "chat-end" : "chat-start"
         }`}
       >
         <div className="chat-image avatar">
@@ -39,24 +64,33 @@ const Message: React.FC<MessageProps> = ({ message, setReplyId }) => {
             {message?.createdAt?.slice(11, 16)}
           </time>
         </div>
+
         <div className="relative flex">
           <div
             className={`chat-bubble min-w-full ${
-              isDropdownOpen && "bg-lime-500 duration-300 text-white"
-            } ${
-              userInfo?.id === message?.userId
-                ? "bg-white text-black"
-                : "bg-indigo-500 text-white"
-            }`}
+              isDropdownOpen && " bg-lime-600 duration-300"
+            } ${isUser ? "bg-indigo-500 text-white" : "bg-white text-black"}`}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            onDoubleClick={() => setReplyId(message?.id)}
           >
-            {message?.content}
+            {message?.replyToContent && (
+              <p
+                className={` text-sm border-l-4 ${
+                  isUser
+                    ? ` bg-blue-400 border-blue-300`
+                    : `bg-gray-100  border-blue-700`
+                }`}
+              >
+                <span className="ml-1">{message?.replyToContent}</span>
+              </p>
+            )}
+            <p>{message?.content}</p>
           </div>
+
+          {/* messgae menu */}
           <div
             className={`z-10 absolute ${
-              userInfo?.id === message?.userId
-                ? "-right-[10rem]"
-                : "-left-[10rem]"
+              isUser ? "-left-[10rem]" : "-right-[10rem]"
             } ${
               isDropdownOpen ? "" : "hidden"
             } bg-gradient-to-r from-gray-100 to-stone-100 rounde-lg shadow w-40`}
@@ -78,15 +112,31 @@ const Message: React.FC<MessageProps> = ({ message, setReplyId }) => {
 
               <li
                 className="flex px-4 py-2 hover:text-[#0275FF] duration-300"
+                onClick={() => {
+                  editMessage(message?.id);
+                  setIsDropdownOpen(false);
+                }}
+              >
+                <FaEdit className="mr-2 mt-1" />
+                Edit
+              </li>
+
+              <li
+                className="flex px-4 py-2 hover:text-[#0275FF] duration-300"
                 onClick={() => handleClipbord(message.content)}
               >
                 <FaRegClone className="mr-2 mt-1" />
                 Copy
               </li>
-              <li className="flex px-4 py-2 hover:text-[#0275FF] duration-300">
-                <FaTrashAlt className="mr-2 mt-1" />
-                Delete
-              </li>
+              {isUser && (
+                <li
+                  className="flex px-4 py-2 hover:text-[#0275FF] duration-300"
+                  onClick={() => deleteMessage(message.id)}
+                >
+                  <FaTrashAlt className="mr-2 mt-1" />
+                  Delete
+                </li>
+              )}
             </ul>
           </div>
         </div>
