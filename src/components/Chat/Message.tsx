@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { FaRegClone, FaReply, FaTrashAlt } from "react-icons/fa";
 import { AuthContext, AuthContextType } from "../../context/AuthContext";
 import { MessageType } from "../../types/message.type";
+import toast from "react-hot-toast";
 
 interface MessageProps {
   message: MessageType;
@@ -12,11 +13,16 @@ const Message: React.FC<MessageProps> = ({ message, setReplyId }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { userInfo } = useContext(AuthContext) as AuthContextType;
 
+  const handleClipbord = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success("copy message");
+    setIsDropdownOpen(false);
+  };
   return (
     <div className="relative">
       <div
         className={`chat text-black relative ${
-          userInfo?.userId === message?.userId ? "chat-start" : "chat-end"
+          userInfo?.id === message?.userId ? "chat-start" : "chat-end"
         }`}
       >
         <div className="chat-image avatar">
@@ -35,13 +41,23 @@ const Message: React.FC<MessageProps> = ({ message, setReplyId }) => {
         </div>
         <div className="relative flex">
           <div
-            className="chat-bubble bg-white text-black"
+            className={`chat-bubble min-w-full ${
+              isDropdownOpen && "bg-lime-500 duration-300 text-white"
+            } ${
+              userInfo?.id === message?.userId
+                ? "bg-white text-black"
+                : "bg-indigo-500 text-white"
+            }`}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             {message?.content}
           </div>
           <div
-            className={`z-10 absolute -right-36 ${
+            className={`z-10 absolute ${
+              userInfo?.id === message?.userId
+                ? "-right-[10rem]"
+                : "-left-[10rem]"
+            } ${
               isDropdownOpen ? "" : "hidden"
             } bg-gradient-to-r from-gray-100 to-stone-100 rounde-lg shadow w-40`}
           >
@@ -60,7 +76,10 @@ const Message: React.FC<MessageProps> = ({ message, setReplyId }) => {
                 Reply
               </li>
 
-              <li className="flex px-4 py-2 hover:text-[#0275FF] duration-300">
+              <li
+                className="flex px-4 py-2 hover:text-[#0275FF] duration-300"
+                onClick={() => handleClipbord(message.content)}
+              >
                 <FaRegClone className="mr-2 mt-1" />
                 Copy
               </li>
