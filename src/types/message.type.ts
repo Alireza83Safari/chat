@@ -9,4 +9,6 @@ export type MessageType = {
   replyToId: null | string;
   replyToLastName: null | string;
   userId: null | string;
+  isEdited: boolean;
+  isSeen: boolean;
 };
