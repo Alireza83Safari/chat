@@ -1,6 +1,5 @@
-import ChatRoom from "../components/Chat/ChatRoom";
-import RoomsList from "../components/Chat/RoomsList";
-import { ChatContextProvider } from "../context/ChatContext";
+import { RoomsList, ChatRoom } from "../components";
+import { ChatContextProvider } from "../context/chat/ChatContext";
 
 const Chat = () => {
   return (
