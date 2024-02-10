@@ -67,9 +67,9 @@ export const ChatContextProvider = ({ children }: ChatContextProviderType) => {
           toast.success("Message edited successfully!");
           break;
 
-        case updateRoomDataWithDelete:
+        case "delete-message":
           dispatch({
-            type: "UPDATE_ROOM_MESSAGE_WITH_DELETE",
+            type: updateRoomDataWithDelete,
             payload: { roomId: content?.roomId, updatedMessage: content?.data },
           } as UpdateRoomMessageWithDeleteAction);
           toast.success("Message deleted successfully!");

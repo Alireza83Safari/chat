@@ -56,7 +56,6 @@ export const chatReducer = (state: State, action: Action): State => {
       const filterMessages = state.rooms[
         action.payload.roomId
       ]?.messages?.filter((msg) => msg.id !== action.payload.updatedMessage.id);
-
       return {
         ...state,
         rooms: {
