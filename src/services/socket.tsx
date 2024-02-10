@@ -1,11 +1,11 @@
 import { ReadCookie } from "../hooks/ReactCookie";
 
 const token = ReadCookie("Authorization");
-export const socket = new WebSocket(
+const socket = new WebSocket(
   `ws://localhost:3000/chat/ws/public?authorization=${token}`
 );
 
-export const sendMessage = (type: string, content: any) => {
+const sendMessage = (type: string, content: any) => {
   let newMessageRequest = {
     type: type,
     unix: Date.now(),
@@ -13,3 +13,5 @@ export const sendMessage = (type: string, content: any) => {
   };
   socket.send(JSON.stringify(newMessageRequest));
 };
+
+export { token, socket, sendMessage };

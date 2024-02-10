@@ -5,17 +5,23 @@ import { MessageType } from "../../types/message.type";
 import toast from "react-hot-toast";
 import { sendMessage } from "../../services/socket";
 import { useLocation } from "react-router-dom";
+import { CiEdit } from "react-icons/ci";
 
 interface MessageProps {
   message: MessageType;
   setReplyId: React.Dispatch<React.SetStateAction<string>>;
+  setEditMessageId: React.Dispatch<React.SetStateAction<string>>;
+  setEditMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Message: React.FC<MessageProps> = ({ message, setReplyId }) => {
+const Message: React.FC<MessageProps> = ({
+  message,
+  setReplyId,
+  setEditMessageId,
+  setEditMessage,
+}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { userInfo } = useContext(AuthContext) as AuthContextType;
-  const [editId, setEditId] = useState("");
-  const [editMessage, setEditMeesage] = useState("");
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const roomId = searchParams.get("roomId");
@@ -31,18 +37,16 @@ const Message: React.FC<MessageProps> = ({ message, setReplyId }) => {
       roomId: roomId,
       id: id,
     });
+
+    setIsDropdownOpen(false);
   };
 
-  const editMessageHandler = (id: string) => {
-    sendMessage("edit-message", {
-      roomId: roomId,
-      id: id,
-      content: "content",
-    });
+  const editMessageHandler = (id: string, content: string) => {
+    setEditMessage(content);
+    setEditMessageId(id);
   };
 
   const isUser = userInfo?.id === message?.userId;
-
   return (
     <div className="relative">
       <div
@@ -85,6 +89,9 @@ const Message: React.FC<MessageProps> = ({ message, setReplyId }) => {
               </p>
             )}
             <p>{message?.content}</p>
+            {message?.isEdited && (
+              <CiEdit className="text-xs text-orange-500" />
+            )}
           </div>
 
           {/* messgae menu */}
@@ -113,7 +120,7 @@ const Message: React.FC<MessageProps> = ({ message, setReplyId }) => {
               <li
                 className="flex px-4 py-2 hover:text-[#0275FF] duration-300"
                 onClick={() => {
-                  editMessage(message?.id);
+                  editMessageHandler(message?.id, message?.content);
                   setIsDropdownOpen(false);
                 }}
               >

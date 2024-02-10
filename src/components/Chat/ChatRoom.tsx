@@ -3,7 +3,7 @@ import Message from "./Message";
 import ChatHeader from "./ChatHeader";
 import SendMessage from "./SendMessage";
 import { useLocation } from "react-router-dom";
-import { ChatContext, ChatContextType } from "../../context/ChatContext";
+import { ChatContext, ChatContextType } from "../../context/chat/ChatContext";
 import { RoomType } from "../../types/room.type";
 import { MessageType } from "../../types/message.type";
 
@@ -13,6 +13,8 @@ const ChatRoom: React.FC = () => {
   const roomId = searchParams.get("roomId");
   const { rooms } = useContext(ChatContext) as ChatContextType;
   const [replyId, setReplyId] = useState("");
+  const [editMessageId, setEditMessageId] = useState("");
+  const [editMessage, setEditMessage] = useState("");
 
   const roomsArray = Object.values(rooms)?.find(
     (room: RoomType) => room?.room?.id === roomId
@@ -52,11 +54,23 @@ const ChatRoom: React.FC = () => {
           >
             {messages?.map((message: MessageType, index) => (
               <React.Fragment key={index}>
-                <Message message={message} setReplyId={setReplyId} />
+                <Message
+                  message={message}
+                  setReplyId={setReplyId}
+                  setEditMessageId={setEditMessageId}
+                  setEditMessage={setEditMessage}
+                />
               </React.Fragment>
             ))}
           </div>
-          <SendMessage replyId={replyId} setReplyId={setReplyId} />
+          <SendMessage
+            replyId={replyId}
+            setReplyId={setReplyId}
+            setEditMessage={setEditMessage}
+            setEditMessageId={setEditMessageId}
+            editMessageId={editMessageId}
+            editMessage={editMessage}
+          />
         </>
       )}
     </div>
