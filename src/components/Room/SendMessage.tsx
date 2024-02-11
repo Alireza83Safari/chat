@@ -122,6 +122,7 @@ const SendMessage: React.FC<SendMessageProps> = ({
           placeholder="Type your message..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
+          dir="auto"
         />
         <button
           className="focus:outline-none absolute right-2 top-1"
