@@ -2,13 +2,13 @@ import React from "react";
 import { FaRegCommentDots } from "react-icons/fa";
 import { IoAlertCircleOutline } from "react-icons/io5";
 
-interface ChatRoomProps {
+interface HeaderProps {
   userName: string;
   onlineStatus: string;
   isPrivate: boolean;
 }
 
-const ChatHeader: React.FC<ChatRoomProps> = ({
+const RoomHeader: React.FC<HeaderProps> = ({
   userName,
   onlineStatus,
   isPrivate,
@@ -40,4 +40,4 @@ const ChatHeader: React.FC<ChatRoomProps> = ({
   );
 };
 
-export default ChatHeader;
+export default RoomHeader;

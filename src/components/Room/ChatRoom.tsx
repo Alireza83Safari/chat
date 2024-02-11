@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import Message from "./Message";
-import ChatHeader from "./ChatHeader";
+import Message from "../Message/Message";
+import RoomHeader from "./RoomHeader";
 import SendMessage from "./SendMessage";
 import { useLocation } from "react-router-dom";
 import { ChatContext, ChatContextType } from "../../context/chat/ChatContext";
@@ -43,7 +43,7 @@ const ChatRoom: React.FC = () => {
     <div className="bg-[#E9E9E9] fixed right-0 bottom-0 top-0 min-h-[20rem] sm:w-[70%] w-[80%] overflow-y-auto ">
       {!!roomId && (
         <>
-          <ChatHeader
+          <RoomHeader
             userName="alireza"
             onlineStatus="online"
             isPrivate={Boolean(roomsArray?.room.isPrivate)}

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { Link, useLocation } from "react-router-dom";
 import { ChatContextType, ChatContext } from "../../context/chat/ChatContext";
-import CreateRoom from "./CreateRoom";
+import CreateRoom from "../CreateRoom";
 import { RoomType } from "../../types/room.type";
 
 const RoomsList: React.FC = () => {

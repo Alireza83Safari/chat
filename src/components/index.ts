@@ -1,4 +1,4 @@
-import ChatRoom from "./Chat/ChatRoom";
-import RoomsList from "./Chat/RoomsList";
+import ChatRoom from "./Room/ChatRoom";
+import RoomsList from "./Room/RoomsList";
 
 export { ChatRoom, RoomsList };

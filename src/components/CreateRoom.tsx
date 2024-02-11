@@ -1,10 +1,10 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import Modal from "../Modal";
-import { axiosInstance } from "../../services/axios";
+import Modal from "./Modal";
+import { axiosInstance } from "../services/axios";
 
 interface CreateRoomInfo {
   name: string;
-  userIds: string;
+  userIds: string[];
 }
 
 interface CreateRoomProps {
@@ -18,7 +18,7 @@ const CreateRoom: React.FC<CreateRoomProps> = ({
 }) => {
   const [createRoomInfo, setCreateRoomInfo] = useState<CreateRoomInfo>({
     name: "",
-    userIds: "",
+    userIds: [""],
   });
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +32,10 @@ const CreateRoom: React.FC<CreateRoomProps> = ({
   const createRoomHandler = async (e: FormEvent) => {
     e.preventDefault();
 
-    const response = await axiosInstance.post(`/chat/api/v1/room`,createRoomInfo) 
+    const response = await axiosInstance.post(
+      `/chat/api/v1/room`,
+      createRoomInfo
+    );
 
     if (response.status === 200) {
       // Handle success
@@ -52,6 +55,19 @@ const CreateRoom: React.FC<CreateRoomProps> = ({
             value={createRoomInfo.name}
             onChange={onChangeHandler}
             name="name"
+          />
+        </div>
+
+        <div className="mt-7">
+          <label className="block mt-4 font-semibold text-[#0275FF]">
+            User IDs
+          </label>
+          <input
+            type="text"
+            className="bg-white border border-[#0275FF] outline-none py-2 rounded-md min-w-[18rem] px-2"
+            value={createRoomInfo.userIds}
+            onChange={onChangeHandler}
+            name="userIds"
           />
         </div>
 

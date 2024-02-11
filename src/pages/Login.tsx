@@ -32,8 +32,8 @@ const Login: React.FC = () => {
         toast.success("login is successfully");
         const expireTime = new Date(data?.data?.data?.expiresAt);
         document.cookie = `Authorization= ${data?.data?.data?.token} ; expires=${expireTime}; secure; path=/; `;
-        checkUserLoginStatus();
         navigate("/room");
+        checkUserLoginStatus();
       }
     } catch (error) {
       setErrorMessage((error as any)?.response?.data?.message);
