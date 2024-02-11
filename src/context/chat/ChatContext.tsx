@@ -7,12 +7,14 @@ import {
   updateRoomData,
   updateRoomDataWithEdit,
   updateRoomDataWithDelete,
+  deleteRoom,
 } from "./ChatAction";
 import {
   SaveRoomDataAction,
   UpdateRoomMessageAction,
   UpdateRoomMessageWithEditAction,
   UpdateRoomMessageWithDeleteAction,
+  deleteRoomAction,
 } from "../../types/chat.type";
 import { socket } from "../../services/socket";
 import toast from "react-hot-toast";
@@ -73,6 +75,14 @@ export const ChatContextProvider = ({ children }: ChatContextProviderType) => {
             payload: { roomId: content?.roomId, updatedMessage: content?.data },
           } as UpdateRoomMessageWithDeleteAction);
           toast.success("Message deleted successfully!");
+          break;
+
+        case "delete-room":
+          dispatch({
+            type: deleteRoom,
+            payload: { roomId: content?.roomId },
+          } as deleteRoomAction);
+          toast.success("Room deleted successfully!");
           break;
 
         default:

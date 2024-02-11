@@ -5,19 +5,22 @@ import {
   UpdateRoomMessageAction,
   UpdateRoomMessageWithEditAction,
   UpdateRoomMessageWithDeleteAction,
+  deleteRoomAction,
 } from "../../types/chat.type";
 import {
   saveRoomData,
   updateRoomData,
   updateRoomDataWithEdit,
   updateRoomDataWithDelete,
+  deleteRoom,
 } from "./ChatAction";
 
 type Action =
   | SaveRoomDataAction
   | UpdateRoomMessageAction
   | UpdateRoomMessageWithEditAction
-  | UpdateRoomMessageWithDeleteAction;
+  | UpdateRoomMessageWithDeleteAction
+  | deleteRoomAction;
 
 type State = {
   rooms: Record<string, RoomType>;
@@ -87,6 +90,15 @@ export const chatReducer = (state: State, action: Action): State => {
             ),
           },
         },
+      };
+
+    case deleteRoom:
+      const filterRooms = { ...state.rooms };
+      delete filterRooms[action.payload.roomId];
+
+      return {
+        ...state,
+        rooms: filterRooms,
       };
 
     default:
