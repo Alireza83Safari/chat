@@ -53,16 +53,24 @@ export const chatReducer = (state: State, action: Action): State => {
       };
 
     case updateRoomDataWithEdit:
-      const filterMessages = state.rooms[
-        action.payload.roomId
-      ]?.messages?.filter((msg) => msg.id !== action.payload.updatedMessage.id);
+      const updateMessage = action.payload.updatedMessage;
+
+      const updatedMessages = state.rooms[action.payload.roomId]?.messages?.map(
+        (msg) => {
+          if (msg.id === updateMessage.id) {
+            return updateMessage;
+          }
+          return msg;
+        }
+      );
+
       return {
         ...state,
         rooms: {
           ...state.rooms,
           [action.payload.roomId]: {
             ...state.rooms[action.payload.roomId],
-            messages: [...filterMessages, action.payload.updatedMessage],
+            messages: updatedMessages,
           },
         },
       };

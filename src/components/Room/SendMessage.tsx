@@ -118,7 +118,7 @@ const SendMessage: React.FC<SendMessageProps> = ({
       <div className="flex relative">
         <input
           type="text"
-          className="flex-grow px-3 py-3 rounded-md focus:outline-none bg-white"
+          className="flex-grow px-3 py-3 rounded-md focus:outline-none bg-white pr-12 text-black"
           placeholder="Type your message..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
