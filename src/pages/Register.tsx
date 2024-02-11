@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 interface RegisterData {
   username: string;
   password: string;
+  firstName: string;
+  lastName: string;
 }
 
 const Register: React.FC = () => {
@@ -14,6 +16,8 @@ const Register: React.FC = () => {
   const [registrationData, setRegistrationData] = React.useState<RegisterData>({
     username: "",
     password: "",
+    firstName: "",
+    lastName: "",
   });
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -52,6 +56,44 @@ const Register: React.FC = () => {
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={registerHandler} method="POST">
+            <div>
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                firstName
+              </label>
+              <div className="mt-2">
+                <input
+                  id="firstName"
+                  name="firstName"
+                  onChange={onChangeHandler}
+                  type="text"
+                  required
+                  className="block w-full px-1 bg-white rounded-md py-1.5 text-gray-900 shadow-sm border border-gray-300 placeholder:text-gray-400 focus:border-2 focus:border-indigo-600 outline-none sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="lastName"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                lastName
+              </label>
+              <div className="mt-2">
+                <input
+                  id="lastName"
+                  name="lastName"
+                  onChange={onChangeHandler}
+                  type="text"
+                  required
+                  className="block w-full px-1 bg-white rounded-md py-1.5 text-gray-900 shadow-sm border border-gray-300 placeholder:text-gray-400 focus:border-2 focus:border-indigo-600 outline-none sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+
             <div>
               <label
                 htmlFor="username"
