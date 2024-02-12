@@ -4,8 +4,8 @@ import { AuthContext, AuthContextType } from "../../context/AuthContext";
 import { MessageType } from "../../types/message.type";
 import toast from "react-hot-toast";
 import { sendMessage } from "../../services/socket";
-import { useLocation } from "react-router-dom";
 import { CiEdit } from "react-icons/ci";
+import getRoomId from "../../hooks/getRoomId";
 
 interface MessageProps {
   message: MessageType;
@@ -22,9 +22,7 @@ const Message: React.FC<MessageProps> = ({
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { userInfo } = useContext(AuthContext) as AuthContextType;
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const roomId = searchParams.get("roomId");
+  const { roomId } = getRoomId();
 
   const handleClipbord = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -63,9 +61,12 @@ const Message: React.FC<MessageProps> = ({
             />
           </div>
         </div>
-        <div className="chat-header mt-2">
-          username
-          <time className="text-xs opacity-50 ml-2">
+        <div className="chat-header mt-2 text-xs flex">
+          <p>
+            {message?.firstName}
+            {message.lastName}
+          </p>
+          <time className="text-xs opacity-50 ml-1">
             {message?.createdAt?.slice(11, 16)}
           </time>
         </div>

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { axiosInstance } from "../services/axios";
 import toast from "react-hot-toast";
 import { AuthContext, AuthContextType } from "../context/AuthContext";
+import { ChatContext } from "../context/chat/ChatContext";
 
 interface LoginData {
   username: string;
@@ -11,6 +12,7 @@ interface LoginData {
 
 const Login: React.FC = () => {
   const { checkUserLoginStatus } = useContext(AuthContext) as AuthContextType;
+  const cg = useContext(ChatContext);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState<LoginData>({
@@ -30,8 +32,6 @@ const Login: React.FC = () => {
 
       if (data.status === 200) {
         toast.success("login is successfully");
-        const expireTime = new Date(data?.data?.data?.expiresAt);
-        document.cookie = `Authorization= ${data?.data?.data?.token} ; expires=${expireTime}; secure; path=/; `;
         navigate("/room");
         checkUserLoginStatus();
       }

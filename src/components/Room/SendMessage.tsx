@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { IoMdSend } from "react-icons/io";
 import { ChatContext, ChatContextType } from "../../context/chat/ChatContext";
-import { useLocation } from "react-router-dom";
 import { FaReply } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
 import { sendMessage, socket } from "../../services/socket";
 import { CiEdit } from "react-icons/ci";
+import getRoomId from "../../hooks/getRoomId";
 
 interface SendMessageProps {
   replyId: string;
@@ -25,9 +25,7 @@ const SendMessage: React.FC<SendMessageProps> = ({
   editMessage,
 }) => {
   const [newMessage, setNewMessage] = useState("");
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const roomId = searchParams.get("roomId");
+  const { roomId } = getRoomId();
 
   useEffect(() => {
     if (roomId) {

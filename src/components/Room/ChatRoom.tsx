@@ -2,15 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import Message from "../Message/Message";
 import RoomHeader from "./RoomHeader";
 import SendMessage from "./SendMessage";
-import { useLocation } from "react-router-dom";
 import { ChatContext, ChatContextType } from "../../context/chat/ChatContext";
 import { RoomType } from "../../types/room.type";
 import { MessageType } from "../../types/message.type";
+import getRoomId from "../../hooks/getRoomId";
 
 const ChatRoom: React.FC = () => {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const roomId = searchParams.get("roomId");
+  const { roomId } = getRoomId();
   const { rooms } = useContext(ChatContext) as ChatContextType;
   const [replyId, setReplyId] = useState("");
   const [editMessageId, setEditMessageId] = useState("");
@@ -43,11 +41,7 @@ const ChatRoom: React.FC = () => {
     <div className="bg-[#E9E9E9] fixed right-0 bottom-0 top-0 min-h-[20rem] sm:w-[70%] w-[80%] overflow-y-auto ">
       {!!roomId && (
         <>
-          <RoomHeader
-            userName="alireza"
-            onlineStatus="online"
-            isPrivate={Boolean(roomsArray?.room.isPrivate)}
-          />
+          <RoomHeader roomInfos={roomsArray} />
           <div
             className="container min-h-screen overflow-auto px-3 "
             ref={containerRef}
