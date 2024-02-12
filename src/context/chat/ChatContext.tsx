@@ -1,5 +1,5 @@
 // ChatContextProvider.tsx
-import React, { createContext, useEffect, useReducer } from "react";
+import React, { createContext, useEffect, useReducer, useState } from "react";
 import { chatReducer } from "./ChatReducer";
 import { RoomType } from "../../types/room.type";
 import {
@@ -25,20 +25,26 @@ type ChatContextProviderType = {
 
 export type ChatContextType = {
   rooms: Record<string, RoomType>;
+  socketHandler: () => void;
+  isSocketConnected: boolean;
 };
 
 export const ChatContext = createContext<ChatContextType | null>(null);
 
 export const ChatContextProvider = ({ children }: ChatContextProviderType) => {
   const [state, dispatch] = useReducer(chatReducer, { rooms: {} });
+  const rooms = state?.rooms;
+  const [isSocketConnected, setIsSocketConnected] = useState(false);
 
-  useEffect(() => {
+  const socketHandler = () => {
     socket.addEventListener("open", (event) => {
       console.log("WebSocket connection opened:", event);
+      setIsSocketConnected(true);
     });
 
     socket.addEventListener("error", (event) => {
       console.log("WebSocket connection error:", event);
+      setIsSocketConnected(false);
     });
 
     socket.addEventListener("message", (event) => {
@@ -64,7 +70,10 @@ export const ChatContextProvider = ({ children }: ChatContextProviderType) => {
         case "edit-message":
           dispatch({
             type: updateRoomDataWithEdit,
-            payload: { roomId: content?.roomId, updatedMessage: content?.data },
+            payload: {
+              roomId: content?.roomId,
+              updatedMessage: content?.data,
+            },
           } as UpdateRoomMessageWithEditAction);
           toast.success("Message edited successfully!");
           break;
@@ -72,7 +81,10 @@ export const ChatContextProvider = ({ children }: ChatContextProviderType) => {
         case "delete-message":
           dispatch({
             type: updateRoomDataWithDelete,
-            payload: { roomId: content?.roomId, updatedMessage: content?.data },
+            payload: {
+              roomId: content?.roomId,
+              updatedMessage: content?.data,
+            },
           } as UpdateRoomMessageWithDeleteAction);
           toast.success("Message deleted successfully!");
           break;
@@ -89,7 +101,27 @@ export const ChatContextProvider = ({ children }: ChatContextProviderType) => {
           console.warn("Unknown message type:", res.type);
       }
     });
+  };
+
+  useEffect(() => {
+    socketHandler();
+
+    const intervalId = setInterval(() => {
+      if (socket.readyState === WebSocket.OPEN) {
+        setIsSocketConnected(socket.readyState === WebSocket.OPEN);
+      } else {
+        socketHandler();
+      }
+    }, 5000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
-  return <ChatContext.Provider value={state}>{children}</ChatContext.Provider>;
+  return (
+    <ChatContext.Provider value={{ rooms, socketHandler, isSocketConnected }}>
+      {children}
+    </ChatContext.Provider>
+  );
 };
