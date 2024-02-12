@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { FaEdit, FaRegClone, FaReply, FaTrashAlt } from "react-icons/fa";
-import { AuthContext, AuthContextType } from "../../context/AuthContext";
 import { MessageType } from "../../types/message.type";
 import toast from "react-hot-toast";
 import { sendMessage } from "../../services/socket";
 import { CiEdit } from "react-icons/ci";
 import getRoomId from "../../hooks/getRoomId";
+import { useAppSelector } from "../../redux/store";
 
 interface MessageProps {
   message: MessageType;
@@ -21,7 +21,7 @@ const Message: React.FC<MessageProps> = ({
   setEditMessage,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { userInfo } = useContext(AuthContext) as AuthContextType;
+  const userInfo = useAppSelector((state) => state.auth.userInfo);
   const { roomId } = getRoomId();
 
   const handleClipbord = (text: string) => {

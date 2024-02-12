@@ -1,18 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { FaRegCommentDots } from "react-icons/fa";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import { RoomType } from "../../types/room.type";
-import { AuthContext, AuthContextType } from "../../context/AuthContext";
 import RoomInfoModal from "./RoomInfoModal";
-import { ChatContext, ChatContextType } from "../../context/chat/ChatContext";
+import { useAppSelector } from "../../redux/store";
 
 interface HeaderProps {
   roomInfos: RoomType | undefined;
 }
 
 const RoomHeader: React.FC<HeaderProps> = ({ roomInfos }) => {
-  const { userInfo } = useContext(AuthContext) as AuthContextType;
-  const { isSocketConnected } = useContext(ChatContext) as ChatContextType;
+  const userInfo = useAppSelector((state) => state.auth.userInfo);
+  const isSocketConnected = useAppSelector(
+    (state) => state.chat.isSocketConnected
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const room = roomInfos?.room;
 

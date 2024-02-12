@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import Message from "../Message/Message";
 import RoomHeader from "./RoomHeader";
 import SendMessage from "./SendMessage";
-import { ChatContext, ChatContextType } from "../../context/chat/ChatContext";
 import { RoomType } from "../../types/room.type";
 import { MessageType } from "../../types/message.type";
 import getRoomId from "../../hooks/getRoomId";
+import { useAppSelector } from "../../redux/store";
 
 const ChatRoom: React.FC = () => {
   const { roomId } = getRoomId();
-  const { rooms } = useContext(ChatContext) as ChatContextType;
+  const rooms = useAppSelector((state) => state.chat.rooms);
   const [replyId, setReplyId] = useState("");
   const [editMessageId, setEditMessageId] = useState("");
   const [editMessage, setEditMessage] = useState("");

@@ -1,9 +1,9 @@
-import React, { ChangeEvent, FormEvent, useContext, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { axiosInstance } from "../services/axios";
 import toast from "react-hot-toast";
-import { AuthContext, AuthContextType } from "../context/AuthContext";
-import { ChatContext } from "../context/chat/ChatContext";
+import { useAppDispatch } from "../redux/store";
+import { fetchUserProfile } from "../redux/store/auth";
 
 interface LoginData {
   username: string;
@@ -11,10 +11,9 @@ interface LoginData {
 }
 
 const Login: React.FC = () => {
-  const { checkUserLoginStatus } = useContext(AuthContext) as AuthContextType;
-  const cg = useContext(ChatContext);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [loginData, setLoginData] = useState<LoginData>({
     username: "",
     password: "",
@@ -33,7 +32,7 @@ const Login: React.FC = () => {
       if (data.status === 200) {
         toast.success("login is successfully");
         navigate("/room");
-        checkUserLoginStatus();
+        dispatch(fetchUserProfile());
       }
     } catch (error) {
       setErrorMessage((error as any)?.response?.data?.message);

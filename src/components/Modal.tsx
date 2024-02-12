@@ -13,8 +13,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     ? ReactDOM.createPortal(
         <div className="fixed inset-0 flex items-center justify-center bg-[#dddd]">
           <div
-            className="bg-white p-5 rounded-lg text-left overflow-hidden shadow-xl relative"
-            onMouseLeave={onClose}
+            className="bg-white sm:p-5 p-2 rounded-lg text-left overflow-hidden shadow-xl relative"
+          //  onMouseLeave={onClose}
           >
             <button
               onClick={onClose}
