@@ -6,6 +6,7 @@ export default {
     colors: {
       ...require("tailwindcss/colors"),
       white: "#FFFFFF",
+      purple: "#6366F1",
     },
   },
 
