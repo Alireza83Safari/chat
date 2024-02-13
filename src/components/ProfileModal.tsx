@@ -45,6 +45,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
           headers: {
             "Content-Type": "multipart/form-data",
           },
+          credentials: "include",
         }
       );
 
