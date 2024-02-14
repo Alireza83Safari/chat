@@ -35,18 +35,11 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
   const handleSaveProfileImage = async () => {
     try {
       const formData = new FormData();
-      formData.append("image", selectedImage!);
+      formData.append("fileUrl", selectedImage);
 
-      const res = await fetch(
-        `http://localhost:3000/media/api/v1/attachment/upload/profile/${userInfo?.id}`,
-        {
-          method: "POST",
-          body: formData,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          credentials: "include",
-        }
+      const res = await axiosInstance.post(
+        `/media/api/v1/attachment/upload/profile/${userInfo?.id}`,
+        formData
       );
 
       if (res.status === 200) {
