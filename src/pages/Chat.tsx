@@ -31,6 +31,7 @@ const Chat = () => {
       const content = JSON.parse(res.content);
 
       switch (res.type) {
+        
         case "room-detail":
           dispatch(saveRoom({ room: content.data }));
           break;
@@ -40,6 +41,9 @@ const Chat = () => {
             updateRoomMessage({ roomId: content.roomId, message: content.data })
           );
           toast.success("New message received!");
+          var aSound = document.createElement('audio');
+          aSound.setAttribute('src', '/audio/Infographic.mp3');
+          aSound.play()
           break;
 
         case "edit-message":
@@ -51,6 +55,9 @@ const Chat = () => {
           );
           toast.success("Message edited successfully!");
           break;
+
+          case "room-avatar-changed":
+        
 
         case "delete-message":
           dispatch(
