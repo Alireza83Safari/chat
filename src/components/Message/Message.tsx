@@ -6,21 +6,36 @@ import { CiEdit } from "react-icons/ci";
 import getRoomId from "../../hooks/getRoomId";
 import { useAppSelector } from "../../redux/store";
 import { sendPrivateMessage, sendPublicMessage } from "../../services/socket";
+import { RoomType } from "../../types/room.type";
 
 interface MessageProps {
   message: MessageType;
   setReplyId: React.Dispatch<React.SetStateAction<string>>;
   setEditMessageId: React.Dispatch<React.SetStateAction<string>>;
   setEditMessage: React.Dispatch<React.SetStateAction<string>>;
-  isPrivate: boolean;
+  roomInfo: RoomType | undefined;
 }
+
+const getUserAvatar = (user: any) => {
+  const hasProfile = !!user.profile?.length;
+
+  if (hasProfile) {
+    return <img className="max-w-12 max-h-12 object-contain rounded-full" src={String(user.profile)} />;
+  } else {
+    return (
+      <div className="w-12 h-12 rounded-full bg-pink-500 flex justify-center items-center">
+        <p className="text-2xl text-white">{user.username?.slice(0, 1)}</p>
+      </div>
+    );
+  }
+};
 
 const Message: React.FC<MessageProps> = ({
   message,
   setReplyId,
   setEditMessageId,
   setEditMessage,
-  isPrivate,
+  roomInfo,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userInfo = useAppSelector((state) => state.auth.userInfo);
@@ -33,7 +48,7 @@ const Message: React.FC<MessageProps> = ({
   };
 
   const deleteMessage = (id: string) => {
-    isPrivate
+    roomInfo?.room?.isPrivate
       ? sendPrivateMessage("delete-message", {
           roomId: roomId,
           id: id,
@@ -52,7 +67,6 @@ const Message: React.FC<MessageProps> = ({
   };
 
   const isUser = userInfo?.id === message?.userId;
-  console.log(userInfo);
 
   return (
     <div className="relative">
@@ -62,10 +76,17 @@ const Message: React.FC<MessageProps> = ({
         }`}
       >
         <div className="chat-image avatar">
-          <div className="w-10 rounded-full">
-            <img src={String(userInfo?.profile)} />
+          <div>
+            {isUser
+              ? getUserAvatar(userInfo)
+              : getUserAvatar(
+                  roomInfo?.room?.users.find(
+                    (user) => user.id === message?.userId
+                  )
+                )}
           </div>
         </div>
+
         <div className="chat-header mt-2 text-xs flex">
           <p>
             {message?.firstName}

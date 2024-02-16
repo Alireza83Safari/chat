@@ -52,8 +52,8 @@ const ChatRoom: React.FC = () => {
                   message={message}
                   setReplyId={setReplyId}
                   setEditMessageId={setEditMessageId}
+                  roomInfo={roomsArray}
                   setEditMessage={setEditMessage}
-                  isPrivate={roomsArray?.room?.isPrivate}
                 />
               </React.Fragment>
             ))}

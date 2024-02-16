@@ -57,7 +57,13 @@ const RoomHeader: React.FC<HeaderProps> = ({ roomInfos }) => {
           className="flex items-center"
           onClick={() => setIsModalOpen(!isModalOpen)}
         >
-          <img src={room?.avatar} className="w-12 h-12 rounded-full" />
+          {room?.avatar?.length ? (
+            <img src={room?.avatar} className="w-12 h-12 rounded-full" />
+          ) : (
+            <div className="w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
+              <p className="text-2xl text-white">{room?.name.slice(0, 1)}</p>
+            </div>
+          )}
 
           <div className="ml-2 lg:text-base text-sm">
             <h2 className="font-semibold text-lg">

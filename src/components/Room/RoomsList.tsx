@@ -62,15 +62,23 @@ const RoomsList: React.FC = () => {
     <nav className="fixed top-0 left-0 bottom-0 min-h-screen sm:w-[30%] w-[20%] overflow-y-auto bg-white">
       <div className="sticky top-0 text-black">
         <div className="flex justify-between border-b border-gray-200 pb-6 pt-3 bg-white md:px-4 px-2">
-          <button className="flex" onClick={() => setIsShowProfile(true)}>
-            <img
-              src={String(userInfo?.profile)}
-              className="w-12 h-12 rounded-full"
-            />
-            <div className="ml-2 sm:block hidden">
-              <p className="font-semibold">{userInfo?.username}</p>
-              <p className="text-sm">v.101</p>
-            </div>
+          <button className="flex items-center" onClick={() => setIsShowProfile(true)}>
+            {userInfo?.profile ? (
+              <img
+                src={String(userInfo?.profile)}
+                className="w-12 h-12 rounded-full"
+              />
+            ) : (
+              <div className="w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
+                <p className="text-2xl text-white">
+                  {userInfo?.username?.slice(0, 1)}
+                </p>
+              </div>
+            )}
+
+            <p className="font-semibold text-xl ml-3 sm:block hidden">
+              {userInfo?.username}
+            </p>
           </button>
           <button
             className="items-center sm:flex hidden"
@@ -115,10 +123,19 @@ const RoomsList: React.FC = () => {
               key={item.room.id}
             >
               <div className="flex items-center">
-                <img
-                  src={item?.room?.avatar}
-                  className="lg:w-14 w-10 lg:h-14 h-10 rounded-full"
-                />
+                {item?.room?.avatar?.length ? (
+                  <img
+                    src={item?.room?.avatar}
+                    className="lg:w-14 w-10 lg:h-14 h-10 rounded-full"
+                  />
+                ) : (
+                  <div className="w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
+                    <p className="text-2xl text-white">
+                      {item?.room.name.slice(0, 1)}
+                    </p>
+                  </div>
+                )}
+
                 <div
                   className=" ml-2 lg:text-base text-sm sm:block hidden"
                   dir="auto"
