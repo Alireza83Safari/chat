@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { FaEdit, FaRegClone, FaReply, FaTrashAlt } from "react-icons/fa";
 import { MessageType } from "../../types/message.type";
 import toast from "react-hot-toast";
-import { sendMessage } from "../../services/socket";
 import { CiEdit } from "react-icons/ci";
 import getRoomId from "../../hooks/getRoomId";
 import { useAppSelector } from "../../redux/store";
+import { sendPrivateMessage, sendPublicMessage } from "../../services/socket";
 
 interface MessageProps {
   message: MessageType;
   setReplyId: React.Dispatch<React.SetStateAction<string>>;
   setEditMessageId: React.Dispatch<React.SetStateAction<string>>;
   setEditMessage: React.Dispatch<React.SetStateAction<string>>;
+  isPrivate: boolean;
 }
 
 const Message: React.FC<MessageProps> = ({
@@ -19,6 +20,7 @@ const Message: React.FC<MessageProps> = ({
   setReplyId,
   setEditMessageId,
   setEditMessage,
+  isPrivate,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userInfo = useAppSelector((state) => state.auth.userInfo);
@@ -31,10 +33,15 @@ const Message: React.FC<MessageProps> = ({
   };
 
   const deleteMessage = (id: string) => {
-    sendMessage("delete-message", {
-      roomId: roomId,
-      id: id,
-    });
+    isPrivate
+      ? sendPrivateMessage("delete-message", {
+          roomId: roomId,
+          id: id,
+        })
+      : sendPublicMessage("delete-message", {
+          roomId: roomId,
+          id: id,
+        });
 
     setIsDropdownOpen(false);
   };
@@ -142,7 +149,7 @@ const Message: React.FC<MessageProps> = ({
               {isUser && (
                 <li
                   className="flex px-4 py-2 hover:text-[#0275FF] duration-300"
-                  onClick={() => deleteMessage(message.id)}
+                  onClick={() => deleteMessage(message?.id)}
                 >
                   <FaTrashAlt className="mr-2 mt-1" />
                   Delete

@@ -1,15 +1,22 @@
-import { ReadCookie } from "../hooks/ReactCookie";
+const publicSocket = new WebSocket(`ws://localhost:3000/chat/ws/public`);
+const privateSocket = new WebSocket(`ws://localhost:3000/chat/ws/private`);
 
-const token = ReadCookie("Authorization");
-const socket = new WebSocket(`ws://localhost:3000/chat/ws/public`);
-
-const sendMessage = (type: string, content: any) => {
+const sendPublicMessage = (type: string, content: any) => {
   let newMessageRequest = {
     type: type,
     unix: Date.now(),
     content: JSON.stringify(content),
   };
-  socket.send(JSON.stringify(newMessageRequest));
+  publicSocket.send(JSON.stringify(newMessageRequest));
 };
 
-export { token, socket, sendMessage };
+const sendPrivateMessage = (type: string, content: any) => {
+  let newMessageRequest = {
+    type: type,
+    unix: Date.now(),
+    content: JSON.stringify(content),
+  };
+  privateSocket.send(JSON.stringify(newMessageRequest));
+};
+
+export { publicSocket, privateSocket, sendPublicMessage, sendPrivateMessage };

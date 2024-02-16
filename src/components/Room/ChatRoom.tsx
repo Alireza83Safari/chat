@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Message from "../Message/Message";
 import RoomHeader from "./RoomHeader";
 import SendMessage from "./SendMessage";
@@ -53,6 +53,7 @@ const ChatRoom: React.FC = () => {
                   setReplyId={setReplyId}
                   setEditMessageId={setEditMessageId}
                   setEditMessage={setEditMessage}
+                  isPrivate={roomsArray?.room?.isPrivate}
                 />
               </React.Fragment>
             ))}
@@ -64,6 +65,7 @@ const ChatRoom: React.FC = () => {
             setEditMessageId={setEditMessageId}
             editMessageId={editMessageId}
             editMessage={editMessage}
+            isPrivate={roomsArray?.room?.isPrivate}
           />
         </>
       )}

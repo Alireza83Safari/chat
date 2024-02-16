@@ -12,6 +12,7 @@ const initialState = {
   roleId: "",
   roleName: "",
   username: "",
+  profile: "",
 };
 
 interface ProfileModalProps {
@@ -81,20 +82,22 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
         roleId: userInfo.roleId || "",
         roleName: userInfo.roleName || "",
         username: userInfo.username || "",
+        profile: userInfo.profile || "",
       });
     }
   }, [userInfo]);
 
+
   return (
     <Modal isOpen={isShowProfile} onClose={() => setIsShowProfile(false)}>
-      <form className="text-black sm:min-w-[24rem]">
+      <form className="text-black sm:min-w-[24rem] p-4">
         <div className="flex justify-center">
           <label htmlFor="imageUpload" className="cursor-pointer">
             <img
               src={
                 selectedImage
                   ? URL.createObjectURL(selectedImage)
-                  : "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                  : `http://localhost:3000/media/uploads/${userInfos?.profile}`
               }
               alt="profile"
               className="w-20 h-20 rounded-full"
