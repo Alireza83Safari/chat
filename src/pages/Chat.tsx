@@ -12,6 +12,7 @@ import {
 } from "../redux/store/chat";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { fetchUserProfile } from "../redux/store/auth";
 
 const Chat = () => {
   const dispatch = useAppDispatch();
@@ -36,16 +37,15 @@ const Chat = () => {
               break;
 
             case "new-message":
-              if (userInfo && content?.data?.userId !== userInfo?.id) {
-                toast.success("New message received!");
-              }
-
               dispatch(
                 updateRoomMessage({
                   roomId: content.roomId,
                   message: content.data,
                 })
               );
+              if (userInfo && content?.data?.userId !== userInfo?.id) {
+                toast.success("New message received!");
+              }
 
               const sound = localStorage.getItem("sound");
               if (sound === "on") {
@@ -89,15 +89,10 @@ const Chat = () => {
               break;
 
             case "user-left":
-              //  dispatch(leaveRoom({ roomId: content.roomId }));
-              //navigate("/room");
-              //   toast.success("You have left the room successfully!");
               break;
 
             case "user-profile-changed":
-              toast.success(
-                "profile change successfully! user-profile-changed"
-              );
+              dispatch(fetchUserProfile());
               break;
             default:
           }
@@ -147,7 +142,7 @@ const Chat = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [userInfo]);
+  }, []);
   return (
     <>
       <RoomsList />
