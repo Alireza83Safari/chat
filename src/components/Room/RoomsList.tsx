@@ -8,6 +8,7 @@ import getRoomId from "../../hooks/getRoomId";
 import { axiosInstance } from "../../services/axios";
 import ProfileModal from "../ProfileModal";
 import { useAppSelector } from "../../redux/store";
+import toast from "react-hot-toast";
 
 interface searchResultType {
   id: string;
@@ -36,9 +37,12 @@ const RoomsList: React.FC = () => {
     }
   };
 
-  const joinRoomHandler = async (id: string) => {
-    const res = await axiosInstance.post(`/chat/api/v1/room/join/${id}`);
-    console.log(res);
+  const handleRoomJoin = async (roomId: string) => {
+    try {
+      await axiosInstance.post(`/chat/api/v1/room/join/${roomId}`);
+    } catch (error) {
+      toast.error("You have already joined");
+    }
   };
 
   useEffect(() => {
@@ -91,7 +95,7 @@ const RoomsList: React.FC = () => {
             <div
               key={room?.id}
               className="mx-4 py-3 font-semibold border-b hover:bg-[#DFE7FF]"
-              onClick={() => joinRoomHandler(room?.id)}
+              onClick={() => handleRoomJoin(room?.id)}
             >
               <p dir="auto">{room?.name}</p>
             </div>

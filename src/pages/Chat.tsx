@@ -74,9 +74,11 @@ const Chat = () => {
 
             case "room-avatar-changed":
             case "user-joined":
+              toast.success("join room successfully!");
+              break;
             case "user-left":
               dispatch(deleteRoom({ roomId: content.roomId }));
-              toast.success("left room successfully!");
+              toast.success("You have left the room successfully!");
               break;
             case "user-profile-changed":
             default:
