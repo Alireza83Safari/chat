@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import { RoomsList, ChatRoom } from "../components";
-import { useAppDispatch } from "../redux/store";
+import { useAppDispatch, useAppSelector } from "../redux/store";
 import { privateSocket, publicSocket } from "../services/socket";
 import {
   deleteRoom,
-  leaveRoom,
   saveRoom,
   setIsSocketConnected,
   updateRoomMessage,
@@ -16,7 +15,10 @@ import { useNavigate } from "react-router-dom";
 
 const Chat = () => {
   const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
+  const userInfo = useAppSelector((state) => state?.auth?.userInfo);
+
   const setupSocketMessageListener = ({
     isPrivate,
   }: {
@@ -34,13 +36,17 @@ const Chat = () => {
               break;
 
             case "new-message":
+              if (userInfo && content?.data?.userId !== userInfo?.id) {
+                toast.success("New message received!");
+              }
+
               dispatch(
                 updateRoomMessage({
                   roomId: content.roomId,
                   message: content.data,
                 })
               );
-              toast.success("New message received!");
+
               const sound = localStorage.getItem("sound");
               if (sound === "on") {
                 var aSound = document.createElement("audio");
@@ -83,9 +89,9 @@ const Chat = () => {
               break;
 
             case "user-left":
-              dispatch(leaveRoom({ roomId: content.roomId }));
-              navigate("/room");
-              toast.success("You have left the room successfully!");
+              //  dispatch(leaveRoom({ roomId: content.roomId }));
+              //navigate("/room");
+              //   toast.success("You have left the room successfully!");
               break;
 
             case "user-profile-changed":
@@ -141,7 +147,7 @@ const Chat = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [userInfo]);
   return (
     <>
       <RoomsList />
