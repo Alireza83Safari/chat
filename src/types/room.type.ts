@@ -5,6 +5,7 @@ export type UserType = {
   id: string;
   lastName: string;
   username: string;
+  profile: string;
 };
 
 export type RoomType = {
@@ -15,5 +16,6 @@ export type RoomType = {
     name: string;
     users: UserType[];
     avatar: string;
+    createdById: string;
   };
 };
