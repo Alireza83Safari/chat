@@ -5,5 +5,6 @@ export type UserType = {
   mobile: string | null;
   roleId: string;
   roleName: string;
+  profile: string | null;
   username: string | null;
 };
