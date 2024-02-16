@@ -37,9 +37,10 @@ const RoomInfoModal: React.FC<RoomInfoModalProps> = ({
 
     if (response.status === 200) {
       setIsModalOpen(false);
-      toast.success("create public room is success");
+      toast.success("create private room is success");
     }
   };
+
   return (
     <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <div className="w-[21rem] text-black relative">
@@ -73,13 +74,17 @@ const RoomInfoModal: React.FC<RoomInfoModalProps> = ({
                 className="px-3 flex items-center"
                 onClick={() => createRoomHandler(user?.id)}
               >
-                <div className="w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
-                  <p className="text-2xl text-white">
-                    {user?.firstName?.length
-                      ? user.lastName?.slice(0, 1)
-                      : user.username?.slice(0, 1)}
-                  </p>
-                </div>
+                {!room?.profile?.length ? (
+                  <div className="w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
+                    <p className="text-2xl text-white">
+                      {user?.firstName?.length
+                        ? user.lastName?.slice(0, 1)
+                        : user.username?.slice(0, 1)}
+                    </p>
+                  </div>
+                ) : (
+                  <img src={room?.profile} alt="" />
+                )}
                 <div className="ml-2">
                   {user?.firstName && user?.lastName ? (
                     <>

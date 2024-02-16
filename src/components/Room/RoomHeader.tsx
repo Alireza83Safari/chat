@@ -21,7 +21,6 @@ interface HeaderProps {
 
 const RoomHeader: React.FC<HeaderProps> = ({ roomInfos }) => {
   const { roomId } = getRoomId();
-  console.log(roomId);
 
   const [showMenu, setShowMenu] = useState(false);
   const userInfo = useAppSelector((state) => state.auth.userInfo);
@@ -47,7 +46,8 @@ const RoomHeader: React.FC<HeaderProps> = ({ roomInfos }) => {
 
   const leaveRoom = async (id: string | null) => {
     const res = await axiosInstance.post(`/chat/api/v1/room/left/${id}`);
-    console.log(res);
+
+    toast.success("You have left the room successfully!");
   };
 
   return (
@@ -57,10 +57,7 @@ const RoomHeader: React.FC<HeaderProps> = ({ roomInfos }) => {
           className="flex items-center"
           onClick={() => setIsModalOpen(!isModalOpen)}
         >
-          <img
-            src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-            className="w-12 h-12 rounded-full"
-          />
+          <img src={room?.avatar} className="w-12 h-12 rounded-full" />
 
           <div className="ml-2 lg:text-base text-sm">
             <h2 className="font-semibold text-lg">

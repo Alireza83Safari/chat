@@ -61,9 +61,6 @@ const SendMessage: React.FC<SendMessageProps> = ({
   const replyMessage = messages?.find((message) => message?.id === replyId);
 
   const handleEditMessage = () => {
-    console.log(editMessageId);
-    console.log(newMessage);
-
     sendPublicMessage("edit-message", {
       roomId: roomId,
       id: editMessageId,

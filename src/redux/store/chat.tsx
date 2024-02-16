@@ -70,6 +70,16 @@ const chatSlice = createSlice({
       };
     },
 
+    leaveRoom: (state, action) => {
+      const filterRooms = { ...state.rooms };
+      delete filterRooms[action.payload.roomId];
+
+      return {
+        ...state,
+        rooms: filterRooms,
+      };
+    },
+
     setIsSocketConnected: (state, action) => {
       state.isSocketConnected = action.payload;
     },
@@ -81,6 +91,7 @@ export const {
   updateRoomMessage,
   updateRoomWithDelete,
   deleteRoom,
+  leaveRoom,
   updateRoomWithEdit,
   setIsSocketConnected,
 } = chatSlice.actions;

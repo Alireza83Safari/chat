@@ -4,6 +4,7 @@ import { useAppDispatch } from "../redux/store";
 import { privateSocket, publicSocket } from "../services/socket";
 import {
   deleteRoom,
+  leaveRoom,
   saveRoom,
   setIsSocketConnected,
   updateRoomMessage,
@@ -11,10 +12,11 @@ import {
   updateRoomWithEdit,
 } from "../redux/store/chat";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Chat = () => {
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   const setupSocketMessageListener = ({
     isPrivate,
   }: {
@@ -70,19 +72,28 @@ const Chat = () => {
             case "delete-room":
               dispatch(deleteRoom({ roomId: content.roomId }));
               toast.success("Room deleted successfully!");
+              navigate("/room");
               break;
 
             case "room-avatar-changed":
+              break;
+
             case "user-joined":
               toast.success("join room successfully!");
               break;
+
             case "user-left":
-              dispatch(deleteRoom({ roomId: content.roomId }));
+              dispatch(leaveRoom({ roomId: content.roomId }));
+              navigate("/room");
               toast.success("You have left the room successfully!");
               break;
+
             case "user-profile-changed":
+              toast.success(
+                "profile change successfully! user-profile-changed"
+              );
+              break;
             default:
-              console.warn("Unknown message type:", res.type);
           }
         });
   };
@@ -105,8 +116,6 @@ const Chat = () => {
       console.log("WebSocket connection error:", event);
       dispatch(setIsSocketConnected(false));
     });
-
-    setupSocketMessageListener({ isPrivate: true });
 
     setupSocketMessageListener({ isPrivate: true });
     setupSocketMessageListener({ isPrivate: false });

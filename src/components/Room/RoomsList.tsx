@@ -64,7 +64,7 @@ const RoomsList: React.FC = () => {
         <div className="flex justify-between border-b border-gray-200 pb-6 pt-3 bg-white md:px-4 px-2">
           <button className="flex" onClick={() => setIsShowProfile(true)}>
             <img
-              src={`http://localhost:3000/media/uploads/${userInfo?.profile}`}
+              src={String(userInfo?.profile)}
               className="w-12 h-12 rounded-full"
             />
             <div className="ml-2 sm:block hidden">
@@ -116,7 +116,7 @@ const RoomsList: React.FC = () => {
             >
               <div className="flex items-center">
                 <img
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                  src={item?.room?.avatar}
                   className="lg:w-14 w-10 lg:h-14 h-10 rounded-full"
                 />
                 <div

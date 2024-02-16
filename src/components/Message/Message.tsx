@@ -52,6 +52,7 @@ const Message: React.FC<MessageProps> = ({
   };
 
   const isUser = userInfo?.id === message?.userId;
+  console.log(userInfo);
 
   return (
     <div className="relative">
@@ -62,10 +63,7 @@ const Message: React.FC<MessageProps> = ({
       >
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">
-            <img
-              alt="Tailwind CSS chat bubble component"
-              src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-            />
+            <img src={String(userInfo?.profile)} />
           </div>
         </div>
         <div className="chat-header mt-2 text-xs flex">

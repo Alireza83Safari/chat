@@ -14,5 +14,6 @@ export type RoomType = {
     isPrivate: boolean;
     name: string;
     users: UserType[];
+    avatar: string;
   };
 };
