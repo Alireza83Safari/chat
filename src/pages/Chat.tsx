@@ -9,6 +9,7 @@ import {
   updateRoomMessage,
   updateRoomWithDelete,
   updateRoomWithEdit,
+  updateRoomUserProfile,
 } from "../redux/store/chat";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -100,6 +101,12 @@ const Chat = () => {
 
             case "user-profile-changed":
               dispatch(fetchUserProfile());
+              dispatch(
+                updateRoomUserProfile({
+                  roomId: content?.roomId,
+                  updatedUserProfile: content?.data,
+                })
+              );
               break;
 
             case "seen-message":

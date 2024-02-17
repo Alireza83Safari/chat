@@ -91,6 +91,29 @@ const chatSlice = createSlice({
         message.isSeen = true;
       });
     },
+
+    updateRoomUserProfile: (state, action) => {
+      const { roomId, updatedUserProfile } = action.payload;
+    
+      const updatedUsers = (state.rooms[roomId]?.room?.users || []).map(user => {
+        return user.id === updatedUserProfile.userID ? {  ...updatedUserProfile } : user;
+      });
+    
+      return {
+        ...state,
+        rooms: {
+          ...state.rooms,
+          [roomId]: {
+            ...state.rooms[roomId],
+            room: {
+              ...state.rooms[roomId]?.room,
+              users: updatedUsers,
+            },
+          },
+        },
+      };
+    },
+    
   },
 });
 
@@ -102,6 +125,7 @@ export const {
   leaveRoom,
   updateRoomWithEdit,
   setIsSocketConnected,
+  updateRoomUserProfile,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

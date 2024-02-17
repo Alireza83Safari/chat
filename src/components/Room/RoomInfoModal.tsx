@@ -136,16 +136,7 @@ const RoomInfoModal: React.FC<RoomInfoModalProps> = ({
                     className="w-12 h-12 rounded-full object-contain"
                   />
                 )}
-                <div className="ml-2">
-                  {user?.firstName && user?.lastName ? (
-                    <>
-                      <p>{user.firstName}</p>
-                      <p>{user.lastName}</p>
-                    </>
-                  ) : (
-                    <p>{user.username}</p>
-                  )}
-                </div>
+                <div className="ml-2">{user.username}</div>
               </div>
             </div>
           ))}

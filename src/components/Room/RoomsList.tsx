@@ -114,13 +114,13 @@ const RoomsList: React.FC = () => {
         <div className="overflow-auto  text-black">
           {roomsArray?.map((item: RoomType) => (
             <Link
-              to={`/room?roomId=${item.room.id}`}
+              to={`/room?roomId=${item?.room?.id}`}
               className={`py-3 flex justify-between px-2 items-center ${
-                !!roomId && roomId === String(item.room.id)
+                !!roomId && roomId === String(item?.room?.id)
                   ? `bg-indigo-100`
                   : ``
               }`}
-              key={item.room.id}
+              key={item?.room?.id}
             >
               <div className="flex items-center">
                 {item?.room?.avatar?.length ? (
@@ -131,7 +131,7 @@ const RoomsList: React.FC = () => {
                 ) : (
                   <div className="w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
                     <p className="text-2xl text-white">
-                      {item?.room.name.slice(0, 1)}
+                      {item?.room?.name.slice(0, 1)}
                     </p>
                   </div>
                 )}
@@ -141,7 +141,7 @@ const RoomsList: React.FC = () => {
                   dir="auto"
                 >
                   <h2 className="font-semibold text-lg" dir="auto">
-                    {item.room.name}
+                    {item?.room?.name}
                   </h2>
                   <p>
                     {!!item?.messages?.length &&
