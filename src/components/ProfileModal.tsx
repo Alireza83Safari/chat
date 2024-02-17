@@ -3,6 +3,9 @@ import Modal from "./Modal";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../services/axios";
 import { useAppSelector } from "../redux/store";
+import { FaOutdent } from "react-icons/fa";
+import { BiLogOut } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   firstName: "",
@@ -27,6 +30,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
   const [userInfos, setUserInfos] = useState(initialState);
   const userInfo = useAppSelector((state) => state.auth.userInfo);
   const [selectedImage, setSelectedImage] = useState() as any;
+  const navigate = useNavigate();
 
   const onChangeHandler = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = target;
@@ -87,10 +91,20 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
       });
     }
   }, [userInfo]);
+  const logoutHandler = async () => {
+    const response = await axiosInstance.post("/auth/api/v1/logout");
+
+    if (response.status === 200) {
+      navigate("/login");
+    }
+  };
 
   return (
     <Modal isOpen={isShowProfile} onClose={() => setIsShowProfile(false)}>
       <form className="text-black sm:min-w-[24rem] p-4">
+        <div className=" absolute top-1 right-10" onClick={logoutHandler}>
+          <BiLogOut className="text-red-600 text-2xl" />
+        </div>
         <div className="flex justify-center">
           <label htmlFor="imageUpload" className="cursor-pointer">
             <img
