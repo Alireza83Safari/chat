@@ -10,6 +10,7 @@ import {
   updateRoomWithDelete,
   updateRoomWithEdit,
   updateRoomUserProfile,
+  updateRoomAvatar,
 } from "../redux/store/chat";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -83,12 +84,12 @@ const Chat = () => {
               break;
 
             case "room-avatar-changed":
-              /*  dispatch(
-                updateRoomProfile({
-                  roomId: content.roomId,
-                  updatedMessage: content.data,
+              dispatch(
+                updateRoomAvatar({
+                  roomId: content?.roomId,
+                  avatar: content?.data?.avatar,
                 })
-              ); */
+              );
 
               break;
 

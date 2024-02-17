@@ -75,7 +75,7 @@ const RoomInfoModal: React.FC<RoomInfoModalProps> = ({
         <div className="flex items-center px-3 hover:bg-[#DFE7FF] duration-300">
           <div className="flex justify-center">
             <label htmlFor="imageUpload" className="cursor-pointer">
-              {!room?.avatar?.length && !!selectedImage ? (
+              {!!room?.avatar?.length || !!selectedImage ? (
                 <img
                   src={
                     selectedImage

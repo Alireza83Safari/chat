@@ -94,11 +94,14 @@ const chatSlice = createSlice({
 
     updateRoomUserProfile: (state, action) => {
       const { roomId, updatedUserProfile } = action.payload;
-    
-      const updatedUsers = (state.rooms[roomId]?.room?.users || []).map(user => {
-        return user.id === updatedUserProfile.userID ? {  ...updatedUserProfile } : user;
-      });
-    
+      const updatedUsers = (state.rooms[roomId]?.room?.users || []).map(
+        (user) => {
+          return user.id === updatedUserProfile.userID
+            ? { ...updatedUserProfile }
+            : user;
+        }
+      );
+
       return {
         ...state,
         rooms: {
@@ -113,7 +116,24 @@ const chatSlice = createSlice({
         },
       };
     },
-    
+
+    updateRoomAvatar: (state, action) => {
+      const { roomId, avatar } = action.payload;
+
+      return {
+        ...state,
+        rooms: {
+          ...state.rooms,
+          [roomId]: {
+            ...state.rooms[roomId],
+            room: {
+              ...state.rooms[roomId]?.room,
+              avatar: `http://localhost:3000/media/uploads/${avatar}`,
+            },
+          },
+        },
+      };
+    },
   },
 });
 
@@ -126,6 +146,7 @@ export const {
   updateRoomWithEdit,
   setIsSocketConnected,
   updateRoomUserProfile,
+  updateRoomAvatar,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
