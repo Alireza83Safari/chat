@@ -14,7 +14,7 @@ interface SendMessageProps {
   setEditMessage: React.Dispatch<React.SetStateAction<string>>;
   editMessageId: string;
   editMessage: string;
-  isPrivate: boolean;
+  isPrivate: boolean | undefined;
 }
 
 const SendMessage: React.FC<SendMessageProps> = ({

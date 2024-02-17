@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "../Modal";
 import { FaTrashAlt } from "react-icons/fa";
 import { MdBlock } from "react-icons/md";
@@ -21,6 +21,7 @@ const RoomInfoModal: React.FC<RoomInfoModalProps> = ({
 }) => {
   const { roomId } = getRoomId();
   const navigate = useNavigate();
+  const [selectedImage, setSelectedImage] = useState() as any;
 
   const deleteChatHandler = async () => {
     const res = await axiosInstance.post(`/chat/api/v1/room/delete/${roomId}`);
@@ -41,6 +42,30 @@ const RoomInfoModal: React.FC<RoomInfoModalProps> = ({
     }
   };
 
+  const handleSaveProfileImage = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("fileUrl", selectedImage);
+
+      const res = await axiosInstance.post(
+        `/media/api/v1/attachment/upload/room/avatar/${roomId}`,
+        formData
+      );
+
+      if (res.status === 200) {
+        toast.success("room avatar has been successfully uploaded!");
+      }
+    } catch (error) {
+      console.error("Error uploading profile picture:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedImage) {
+      handleSaveProfileImage();
+    }
+  }, [selectedImage]);
+
   return (
     <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <div className="w-[21rem] text-black relative">
@@ -48,8 +73,33 @@ const RoomInfoModal: React.FC<RoomInfoModalProps> = ({
           <p className="font-bold py-1 px-3">Room Info</p>
         </div>
         <div className="flex items-center px-3 hover:bg-[#DFE7FF] duration-300">
-          <div className="px-3 py-5 w-16 h-16 rounded-full flex justify-center items-center bg-pink-500">
-            <p className="text-2xl text-white">{room?.name?.slice(0, 1)}</p>
+          <div className="flex justify-center">
+            <label htmlFor="imageUpload" className="cursor-pointer">
+              {!room?.avatar?.length && !!selectedImage ? (
+                <img
+                  src={
+                    selectedImage
+                      ? URL.createObjectURL(selectedImage)
+                      : room?.avatar
+                  }
+                  alt="profile"
+                  className="w-20 h-20 rounded-full"
+                />
+              ) : (
+                <div className="px-3 py-5 w-16 h-16 rounded-full flex justify-center items-center bg-pink-500">
+                  <p className="text-2xl text-white">
+                    {room?.name?.slice(0, 1)}
+                  </p>
+                </div>
+              )}
+              <input
+                type="file"
+                id="imageUpload"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => setSelectedImage(e.target.files[0])}
+              />
+            </label>
           </div>
           <div className="px-3 py-5 ml-4">
             <h1 className="text-lg font-semibold">{room?.name}</h1>
@@ -74,16 +124,17 @@ const RoomInfoModal: React.FC<RoomInfoModalProps> = ({
                 className="px-3 flex items-center"
                 onClick={() => createRoomHandler(user?.id)}
               >
-                {!room?.profile?.length ? (
+                {!user?.profile?.length ? (
                   <div className="w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
                     <p className="text-2xl text-white">
-                      {user?.firstName?.length
-                        ? user.lastName?.slice(0, 1)
-                        : user.username?.slice(0, 1)}
+                      {user.username?.slice(0, 1)}
                     </p>
                   </div>
                 ) : (
-                  <img src={room?.profile} alt="" />
+                  <img
+                    src={user?.profile}
+                    className="w-12 h-12 rounded-full object-contain"
+                  />
                 )}
                 <div className="ml-2">
                   {user?.firstName && user?.lastName ? (

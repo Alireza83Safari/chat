@@ -6,10 +6,12 @@ import { RoomType } from "../../types/room.type";
 import { MessageType } from "../../types/message.type";
 import getRoomId from "../../hooks/getRoomId";
 import { useAppSelector } from "../../redux/store";
+import { sendPrivateMessage, sendPublicMessage } from "../../services/socket";
 
 const ChatRoom: React.FC = () => {
   const { roomId } = getRoomId();
   const rooms = useAppSelector((state) => state.chat.rooms);
+  const userInfo = useAppSelector((state) => state.auth.userInfo);
   const [replyId, setReplyId] = useState("");
   const [editMessageId, setEditMessageId] = useState("");
   const [editMessage, setEditMessage] = useState("");
@@ -36,6 +38,22 @@ const ChatRoom: React.FC = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const lastUnseenMessage = messages
+    ?.filter(
+      (message: MessageType) =>
+        message.userId !== userInfo?.id && !message.isSeen
+    )
+    ?.pop();
+
+  useEffect(() => {
+    if (userInfo?.id !== lastUnseenMessage?.userId) {
+      sendPrivateMessage("seen-message", {
+        roomId: roomId,
+        id: lastUnseenMessage?.id,
+      });
+    }
+  }, [roomId, messages]);
 
   return (
     <div className="bg-[#E9E9E9] fixed right-0 bottom-0 top-0 min-h-[20rem] sm:w-[70%] w-[80%] overflow-y-auto ">

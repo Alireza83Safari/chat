@@ -17,14 +17,14 @@ interface MessageProps {
 }
 
 const getUserAvatar = (user: any) => {
-  const hasProfile = !!user.profile?.length;
+  const hasProfile = !!user?.profile?.length;
 
   if (hasProfile) {
-    return <img className="max-w-12 max-h-12 object-contain rounded-full" src={String(user.profile)} />;
+    return <img className="max-w-12 max-h-12 object-contain rounded-full" src={String(user?.profile)} />;
   } else {
     return (
       <div className="w-12 h-12 rounded-full bg-pink-500 flex justify-center items-center">
-        <p className="text-2xl text-white">{user.username?.slice(0, 1)}</p>
+        <p className="text-2xl text-white">{user?.username?.slice(0, 1)}</p>
       </div>
     );
   }

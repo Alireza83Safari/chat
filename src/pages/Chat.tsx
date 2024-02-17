@@ -82,6 +82,13 @@ const Chat = () => {
               break;
 
             case "room-avatar-changed":
+              /*  dispatch(
+                updateRoomProfile({
+                  roomId: content.roomId,
+                  updatedMessage: content.data,
+                })
+              ); */
+
               break;
 
             case "user-joined":
@@ -93,6 +100,10 @@ const Chat = () => {
 
             case "user-profile-changed":
               dispatch(fetchUserProfile());
+              break;
+
+            case "seen-message":
+              toast.success("seen");
               break;
             default:
           }

@@ -45,6 +45,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
 
       if (res.status === 200) {
         toast.success("Your profile picture has been successfully uploaded!");
+        setIsShowProfile(false);
       }
     } catch (error) {
       console.error("Error uploading profile picture:", error);

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RoomType } from "../../types/room.type";
+import { MessageType } from "../../types/message.type";
 
 type State = {
   rooms: Record<string, RoomType>;
@@ -82,6 +83,13 @@ const chatSlice = createSlice({
 
     setIsSocketConnected: (state, action) => {
       state.isSocketConnected = action.payload;
+    },
+
+    markAllMessagesAsSeen: (state, action) => {
+      const { roomId } = action.payload;
+      state.rooms[roomId]?.messages?.forEach((message: MessageType) => {
+        message.isSeen = true;
+      });
     },
   },
 });
