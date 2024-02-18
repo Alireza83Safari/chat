@@ -11,7 +11,7 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   return isOpen
     ? ReactDOM.createPortal(
-        <div className="fixed inset-0 flex items-center justify-center bg-[#dddd]">
+        <div className="fixed inset-0 flex items-center justify-center bg-[#dddd] z-30">
           <div className="bg-white rounded-lg text-left overflow-hidden shadow-xl relative">
             <button
               onClick={onClose}

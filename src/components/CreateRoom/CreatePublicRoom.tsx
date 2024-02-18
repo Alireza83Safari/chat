@@ -43,15 +43,15 @@ const CreatePublicRoom: React.FC<CreatePublicRoomProps> = ({
     }
   };
   return (
-    <form className="text-black" onSubmit={createRoomHandler}>
+    <form className="text-black p-5" onSubmit={createRoomHandler}>
       <h1 className="text-center text-xl mb-8 font-semibold">
         Create Public Room
       </h1>
       <div>
-        <label className="block font-semibold text-[#0275FF]"></label>
+        <label className="block font-semibold text-indigo-600"></label>
         <input
           type="text"
-          className="bg-white border border-[#0275FF] outline-none py-2 rounded-md min-w-[18rem] px-2 text-black"
+          className="bg-white border border-[indigo-600 outline-none py-2 rounded-md min-w-[18rem] px-2 text-black"
           value={createRoomInfo.name}
           onChange={onChangeHandler}
           name="name"
@@ -61,7 +61,7 @@ const CreatePublicRoom: React.FC<CreatePublicRoomProps> = ({
 
       <button
         type="submit"
-        className="bg-[#0275FF] text-white min-w-[18rem] mt-9 py-2 rounded-md"
+        className="bg-indigo-600 text-white min-w-[18rem] mt-9 py-2 rounded-md"
       >
         Create Room
       </button>
