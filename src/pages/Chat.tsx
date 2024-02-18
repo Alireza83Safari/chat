@@ -15,6 +15,7 @@ import {
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { fetchUserProfile } from "../redux/store/auth";
+import Sidebar from "../components/Sidebar";
 
 const Chat = () => {
   const dispatch = useAppDispatch();
@@ -27,95 +28,94 @@ const Chat = () => {
   }: {
     isPrivate: boolean;
   }) => {
-    isPrivate
-      ? privateSocket
-      : publicSocket.addEventListener("message", (event) => {
-          const res = JSON.parse(event.data);
-          const content = JSON.parse(res.content);
+    const socket = isPrivate ? privateSocket : publicSocket;
+    socket?.addEventListener("message", (event) => {
+      const res = JSON.parse(event.data);
+      const content = JSON.parse(res.content);
 
-          switch (res.type) {
-            case "room-detail":
-              dispatch(saveRoom({ room: content.data }));
-              break;
+      switch (res.type) {
+        case "room-detail":
+          dispatch(saveRoom({ room: content.data }));
+          break;
 
-            case "new-message":
-              dispatch(
-                updateRoomMessage({
-                  roomId: content.roomId,
-                  message: content.data,
-                })
-              );
-              if (userInfo && content?.data?.userId !== userInfo?.id) {
-                toast.success("New message received!");
-              }
-
-              const sound = localStorage.getItem("sound");
-              if (sound === "on") {
-                var aSound = document.createElement("audio");
-                aSound.setAttribute("src", "/audio/Infographic.mp3");
-                aSound.play();
-              }
-              break;
-
-            case "edit-message":
-              dispatch(
-                updateRoomWithEdit({
-                  roomId: content.roomId,
-                  updatedMessage: content.data,
-                })
-              );
-              toast.success("Message edited successfully!");
-              break;
-
-            case "delete-message":
-              dispatch(
-                updateRoomWithDelete({
-                  roomId: content.roomId,
-                  updatedMessage: content.data,
-                })
-              );
-              toast.success("Message deleted successfully!");
-              break;
-
-            case "delete-room":
-              dispatch(deleteRoom({ roomId: content.roomId }));
-              toast.success("Room deleted successfully!");
-              navigate("/room");
-              break;
-
-            case "room-avatar-changed":
-              dispatch(
-                updateRoomAvatar({
-                  roomId: content?.roomId,
-                  avatar: content?.data?.avatar,
-                })
-              );
-
-              break;
-
-            case "user-joined":
-              toast.success("join room successfully!");
-              break;
-
-            case "user-left":
-              break;
-
-            case "user-profile-changed":
-              dispatch(fetchUserProfile());
-              dispatch(
-                updateRoomUserProfile({
-                  roomId: content?.roomId,
-                  updatedUserProfile: content?.data,
-                })
-              );
-              break;
-
-            case "seen-message":
-              toast.success("seen");
-              break;
-            default:
+        case "new-message":
+          dispatch(
+            updateRoomMessage({
+              roomId: content.roomId,
+              message: content.data,
+            })
+          );
+          if (userInfo && content?.data?.userId !== userInfo?.id) {
+            toast.success("New message received!");
           }
-        });
+
+          const sound = localStorage.getItem("sound");
+          if (sound === "on") {
+            var aSound = document.createElement("audio");
+            aSound.setAttribute("src", "/audio/Infographic.mp3");
+            aSound.play();
+          }
+          break;
+
+        case "edit-message":
+          dispatch(
+            updateRoomWithEdit({
+              roomId: content.roomId,
+              updatedMessage: content.data,
+            })
+          );
+          toast.success("Message edited successfully!");
+          break;
+
+        case "delete-message":
+          dispatch(
+            updateRoomWithDelete({
+              roomId: content.roomId,
+              updatedMessage: content.data,
+            })
+          );
+          toast.success("Message deleted successfully!");
+          break;
+
+        case "delete-room":
+          dispatch(deleteRoom({ roomId: content.roomId }));
+          toast.success("Room deleted successfully!");
+          navigate("/room");
+          break;
+
+        case "room-avatar-changed":
+          dispatch(
+            updateRoomAvatar({
+              roomId: content?.roomId,
+              avatar: content?.data?.avatar,
+            })
+          );
+
+          break;
+
+        case "user-joined":
+          toast.success("join room successfully!");
+          break;
+
+        case "user-left":
+          break;
+
+        case "user-profile-changed":
+          dispatch(fetchUserProfile());
+          dispatch(
+            updateRoomUserProfile({
+              roomId: content?.roomId,
+              updatedUserProfile: content?.data,
+            })
+          );
+          break;
+
+        case "seen-message":
+          toast.success("seen");
+          break;
+        default:
+      }
+    });
   };
 
   const socketHandler = () => {
@@ -164,6 +164,7 @@ const Chat = () => {
   }, []);
   return (
     <>
+      <Sidebar />
       <RoomsList />
       <ChatRoom />
     </>

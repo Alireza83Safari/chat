@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useTransition } from "react";
 import { FaPlus } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import CreateRoom from "../CreateRoom/CreateRoom";
 import { RoomType } from "../../types/room.type";
 import { FaSearch } from "react-icons/fa";
@@ -57,10 +57,37 @@ const RoomsList: React.FC = () => {
     });
   };
 
+  const [filterRooms, settFilterRooms] = useState([]) as any;
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const q = searchParams.get("q");
+
+  const handleFilterRooms = () => {
+    if (q === "all") {
+      settFilterRooms(roomsArray);
+    }
+    if (q === "public") {
+      const filter = roomsArray.filter(
+        (room) => room.room?.isPrivate === false
+      );
+      settFilterRooms(filter);
+    }
+    if (q === "private") {
+      const filter = roomsArray.filter((room) => room.room?.isPrivate === true);
+      settFilterRooms(filter);
+    }
+  };
+
+  useEffect(() => {
+    handleFilterRooms();
+  }, [q]);
+
   const userInfo = useAppSelector((state) => state.auth.userInfo);
+
+  const mapState = filterRooms?.length ? filterRooms : roomsArray;
   return (
-    <nav className="fixed top-0 left-0 bottom-0 min-h-screen sm:w-[30%] w-[20%] overflow-y-auto bg-white">
-      <div className="sticky top-0 text-black">
+    <nav className="fixed top-0 md:left-[7%] bottom-0 min-h-screen md:w-[25%] sm:w-[30%] w-[20%] overflow-y-auto bg-white">
+      <div className="sticky top-0 text-black min-w-full">
         <div className="flex justify-between border-b border-gray-200 pb-6 pt-3 bg-white md:px-4 px-2">
           <button
             className="flex items-center"
@@ -83,12 +110,7 @@ const RoomsList: React.FC = () => {
               {userInfo?.username}
             </p>
           </button>
-          <button
-            className="items-center sm:flex hidden"
-            onClick={() => setIsModalOpen(true)}
-          >
-            <FaPlus className="mr-2 text-xl" />
-          </button>
+    
         </div>
         <div className="relative my-3 mx-4">
           <input
@@ -115,7 +137,7 @@ const RoomsList: React.FC = () => {
       </div>
       {!searchQuery?.length ? (
         <div className="overflow-auto  text-black">
-          {roomsArray?.map((item: RoomType) => (
+          {mapState?.map((item: RoomType) => (
             <Link
               to={`/room?roomId=${item?.room?.id}`}
               className={`py-3 flex justify-between px-2 items-center ${
