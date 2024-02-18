@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  FaBell,
-  FaBellSlash,
-  FaRegCommentDots,
-  FaSignOutAlt,
-} from "react-icons/fa";
-import { IoAlertCircleOutline } from "react-icons/io5";
+import { FaBell, FaBellSlash, FaSignOutAlt } from "react-icons/fa";
 import { HiDotsVertical } from "react-icons/hi";
 import { MdReportGmailerrorred } from "react-icons/md";
 import toast from "react-hot-toast";
@@ -54,7 +48,7 @@ const RoomHeader: React.FC<HeaderProps> = ({ roomInfos }) => {
 
   return (
     <>
-      <div className="flex justify-between items-center py-3 text-black-800 px-3 sticky top-0 z-10 bg-[#F8F9FB] shadow-xl text-black">
+      <div className="flex justify-between items-center py-3 text-black-800 sm:px-3 sticky top-0 z-10 bg-[#F8F9FB] shadow-xl text-black">
         <div
           className="flex items-center"
           onClick={() => setIsModalOpen(!isModalOpen)}
@@ -63,7 +57,9 @@ const RoomHeader: React.FC<HeaderProps> = ({ roomInfos }) => {
           room?.users?.find((user) => user?.id !== userInfo?.id)?.profile
             ?.length ? (
             <img
-              src={room?.users?.find((user) => user?.id !== userInfo?.id)?.profile}
+              src={
+                room?.users?.find((user) => user?.id !== userInfo?.id)?.profile
+              }
               className="w-12 h-12 rounded-full"
               alt="Room Avatar"
             />
@@ -79,7 +75,7 @@ const RoomHeader: React.FC<HeaderProps> = ({ roomInfos }) => {
             </div>
           )}
           <div className="ml-2 lg:text-base text-sm">
-            <h2 className="font-semibold text-lg">
+            <h2 className="font-semibold sm:text-lg">
               {!room?.isPrivate
                 ? room?.name
                 : room?.users?.find((user) => user.id !== userInfo?.id)
@@ -88,9 +84,7 @@ const RoomHeader: React.FC<HeaderProps> = ({ roomInfos }) => {
             <p>{!isSocketConnected ? "Connecting..." : ""}</p>
           </div>
         </div>
-        <div className="flex text-xl gap-x-3 relative">
-          <FaRegCommentDots />
-          <IoAlertCircleOutline />
+        <div className="flex text-2xl gap-x-3 relative">
           <HiDotsVertical onClick={() => setShowMenu(!showMenu)} />
           {showMenu && (
             <div className="absolute top-7 right-1 shadow-2xl bg-white rounded-md text-base w-28">

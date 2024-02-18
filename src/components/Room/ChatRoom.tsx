@@ -6,7 +6,7 @@ import { RoomType } from "../../types/room.type";
 import { MessageType } from "../../types/message.type";
 import getRoomId from "../../hooks/getRoomId";
 import { useAppSelector } from "../../redux/store";
-import { sendPrivateMessage, sendPublicMessage } from "../../services/socket";
+import { sendPrivateMessage } from "../../services/socket";
 
 const ChatRoom: React.FC = () => {
   const { roomId } = getRoomId();
@@ -56,12 +56,12 @@ const ChatRoom: React.FC = () => {
   }, [roomId, messages]);
 
   return (
-    <div className="bg-[#E9E9E9] fixed right-0 bottom-0 top-0 min-h-[20rem] sm:w-[70%] w-[80%] overflow-y-auto ">
+    <div className="bg-[#E9E9E9] fixed right-0 bottom-0 top-0 min-h-[20rem] w-full overflow-y-auto lg:pl-[320px] md:pl-[280px] sm:pl-[150px] pl-[75px] -z-10">
       {!!roomId && (
         <>
           <RoomHeader roomInfos={roomsArray} />
           <div
-            className="container min-h-screen overflow-auto px-3 "
+            className="container min-h-screen overflow-auto lg:px-3 "
             ref={containerRef}
           >
             {messages?.map((message: MessageType, index) => (

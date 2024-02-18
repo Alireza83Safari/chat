@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useTransition } from "react";
-import { FaPlus } from "react-icons/fa6";
 import { Link, useLocation } from "react-router-dom";
 import CreateRoom from "../CreateRoom/CreateRoom";
 import { RoomType } from "../../types/room.type";
@@ -86,7 +85,7 @@ const RoomsList: React.FC = () => {
 
   const mapState = filterRooms?.length ? filterRooms : roomsArray;
   return (
-    <nav className="fixed top-0 md:left-[7%] bottom-0 min-h-screen md:w-[25%] sm:w-[30%] w-[20%] overflow-y-auto bg-white">
+    <nav className="fixed top-0 md:left-[80px] bottom-0 min-h-screen lg:w-[240px] md:w-[200px] sm:w-[150px] w-[75px] overflow-y-auto bg-white">
       <div className="sticky top-0 text-black min-w-full">
         <div className="flex justify-between border-b border-gray-200 pb-6 pt-3 bg-white md:px-4 px-2">
           <button
@@ -110,12 +109,11 @@ const RoomsList: React.FC = () => {
               {userInfo?.username}
             </p>
           </button>
-    
         </div>
-        <div className="relative my-3 mx-4">
+        <div className="relative my-3 lg:mx-4 x-1 min-w-full">
           <input
             type="text"
-            className="bg-white py-2 pl-8 border min-w-full outline-none rounded-lg"
+            className="bg-white py-2 pl-8 border sm:min-w-full w-[70px] outline-none rounded-lg z-30"
             value={searchQuery}
             onChange={handleChange}
           />
@@ -127,7 +125,7 @@ const RoomsList: React.FC = () => {
           searchResult?.map((room: searchResultType) => (
             <div
               key={room?.id}
-              className="mx-4 py-3 font-semibold border-b hover:bg-[#DFE7FF]"
+              className="sm:mx-4 mx-1 py-3 font-semibold border-b hover:bg-[#DFE7FF]"
               onClick={() => handleRoomJoin(room?.id)}
             >
               <p dir="auto">{room?.name}</p>
@@ -136,11 +134,11 @@ const RoomsList: React.FC = () => {
         )}
       </div>
       {!searchQuery?.length ? (
-        <div className="overflow-auto  text-black">
+        <div className="overflow-auto text-black">
           {mapState?.map((item: RoomType) => (
             <Link
               to={`/room?roomId=${item?.room?.id}`}
-              className={`py-3 flex justify-between px-2 items-center ${
+              className={`sm:py-3 py-2 flex sm:justify-between justify-center sm:px-2 items-center ${
                 !!roomId && roomId === String(item?.room?.id)
                   ? `bg-indigo-100`
                   : ``
@@ -157,7 +155,7 @@ const RoomsList: React.FC = () => {
                         (user) => user?.id !== userInfo?.id
                       )?.profile
                     }
-                    className="lg:w-14 w-10 lg:h-14 h-10 rounded-full"
+                    className="w-12 h-12 rounded-full border"
                   />
                 ) : <div className="w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
                     <p className="text-2xl text-white">
@@ -167,7 +165,7 @@ const RoomsList: React.FC = () => {
                   item?.room?.avatar?.length ? (
                     <img
                       src={item?.room?.avatar || ""}
-                      className="lg:w-14 w-10 lg:h-14 h-10 rounded-full"
+                      className="w-12 h-12 rounded-full"
                       alt="Room Avatar"
                     />
                   ) : (

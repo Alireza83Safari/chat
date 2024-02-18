@@ -75,7 +75,7 @@ const SendMessage: React.FC<SendMessageProps> = ({
   }, [editMessage]);
   return (
     <div
-      className="px-4 pb-3 sticky bottom-0 bg-[#E9E9E9] "
+      className="sm:px-4 px-1 pb-3 sticky bottom-0 bg-[#E9E9E9] "
       onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
     >
       {replyId && (
@@ -113,14 +113,14 @@ const SendMessage: React.FC<SendMessageProps> = ({
       <div className="flex relative">
         <input
           type="text"
-          className="flex-grow px-3 py-3 rounded-md focus:outline-none bg-white pr-12 text-black"
+          className="flex-grow min-w-full px-3 py-3 rounded-md focus:outline-none bg-white pr-12 text-black"
           placeholder="Type your message..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           dir="auto"
         />
         <button
-          className="focus:outline-none absolute right-2 top-1"
+          className="focus:outline-none absolute sm:right-2 right-0 top-1"
           onClick={handleSendMessage}
         >
           <IoMdSend className="text-4xl text-[#5670EB]" />
