@@ -62,7 +62,10 @@ const RoomsList: React.FC = () => {
     <nav className="fixed top-0 left-0 bottom-0 min-h-screen sm:w-[30%] w-[20%] overflow-y-auto bg-white">
       <div className="sticky top-0 text-black">
         <div className="flex justify-between border-b border-gray-200 pb-6 pt-3 bg-white md:px-4 px-2">
-          <button className="flex items-center" onClick={() => setIsShowProfile(true)}>
+          <button
+            className="flex items-center"
+            onClick={() => setIsShowProfile(true)}
+          >
             {userInfo?.profile ? (
               <img
                 src={String(userInfo?.profile)}
@@ -123,25 +126,49 @@ const RoomsList: React.FC = () => {
               key={item?.room?.id}
             >
               <div className="flex items-center">
-                {item?.room?.avatar?.length ? (
+                {item?.room?.isPrivate &&
+                item?.room?.users?.find((user) => user?.id !== userInfo?.id)
+                  ?.profile?.length ? (
                   <img
-                    src={item?.room?.avatar}
+                    src={
+                      item?.room?.users?.find(
+                        (user) => user?.id !== userInfo?.id
+                      )?.profile
+                    }
                     className="lg:w-14 w-10 lg:h-14 h-10 rounded-full"
                   />
-                ) : (
-                  <div className="w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
+                ) : <div className="w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
                     <p className="text-2xl text-white">
                       {item?.room?.name.slice(0, 1)}
                     </p>
-                  </div>
+                  </div> ? (
+                  item?.room?.avatar?.length ? (
+                    <img
+                      src={item?.room?.avatar || ""}
+                      className="lg:w-14 w-10 lg:h-14 h-10 rounded-full"
+                      alt="Room Avatar"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
+                      <p className="text-2xl text-white">
+                        {item?.room?.name.slice(0, 1)}
+                      </p>
+                    </div>
+                  )
+                ) : (
+                  ""
                 )}
 
                 <div
-                  className=" ml-2 lg:text-base text-sm sm:block hidden"
+                  className="ml-2 lg:text-base text-sm sm:block hidden"
                   dir="auto"
                 >
                   <h2 className="font-semibold text-lg" dir="auto">
-                    {item?.room?.name}
+                    {item?.room?.isPrivate
+                      ? item?.room?.users?.find(
+                          (user) => user?.id !== userInfo?.id
+                        )?.username
+                      : item?.room?.name || "Default Name"}
                   </h2>
                   <p>
                     {!!item?.messages?.length &&
