@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEdit, FaRegClone, FaReply, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaEye, FaRegClone, FaReply, FaTrashAlt } from "react-icons/fa";
 import { MessageType } from "../../types/message.type";
 import toast from "react-hot-toast";
 import { CiEdit } from "react-icons/ci";
@@ -7,6 +7,7 @@ import getRoomId from "../../hooks/getRoomId";
 import { useAppSelector } from "../../redux/store";
 import { sendPrivateMessage, sendPublicMessage } from "../../services/socket";
 import { RoomType } from "../../types/room.type";
+import { TiTick } from "react-icons/ti";
 
 interface MessageProps {
   message: MessageType;
@@ -20,7 +21,12 @@ const getUserAvatar = (user: any) => {
   const hasProfile = !!user?.profile?.length;
 
   if (hasProfile) {
-    return <img className="max-w-12 max-h-12 object-contain rounded-full" src={String(user?.profile)} />;
+    return (
+      <img
+        className="max-w-12 max-h-12 object-contain rounded-full"
+        src={String(user?.profile)}
+      />
+    );
   } else {
     return (
       <div className="w-12 h-12 rounded-full bg-pink-500 flex justify-center items-center">
@@ -122,6 +128,13 @@ const Message: React.FC<MessageProps> = ({
             {message?.isEdited && (
               <CiEdit className="text-xs text-orange-500" />
             )}
+            {roomInfo?.room?.isPrivate &&
+              message?.isSeen &&
+              message?.userId == userInfo?.id && (
+                <div className="flex items-center text-white text-sm mt-1">
+                  <img src="/image/tick.svg" />
+                </div>
+              )}
           </div>
 
           {/* messgae menu */}

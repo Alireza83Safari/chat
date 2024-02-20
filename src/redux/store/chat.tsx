@@ -85,7 +85,7 @@ const chatSlice = createSlice({
       state.isSocketConnected = action.payload;
     },
 
-    markAllMessagesAsSeen: (state, action) => {
+    seenMessage: (state, action) => {
       const { roomId } = action.payload;
       state.rooms[roomId]?.messages?.forEach((message: MessageType) => {
         message.isSeen = true;
@@ -147,6 +147,7 @@ export const {
   setIsSocketConnected,
   updateRoomUserProfile,
   updateRoomAvatar,
+  seenMessage,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

@@ -11,6 +11,7 @@ import {
   updateRoomWithEdit,
   updateRoomUserProfile,
   updateRoomAvatar,
+  seenMessage,
 } from "../redux/store/chat";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -111,7 +112,7 @@ const Chat = () => {
           break;
 
         case "seen-message":
-          toast.success("seen");
+          dispatch(seenMessage({ roomId: content?.roomId }));
           break;
         default:
       }
