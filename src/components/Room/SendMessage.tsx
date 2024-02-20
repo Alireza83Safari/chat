@@ -36,16 +36,17 @@ const SendMessage: React.FC<SendMessageProps> = ({
   }, [roomId]);
 
   const handleSendMessage = () => {
+    const sendMessageIsPrivate = isPrivate
+      ? sendPrivateMessage
+      : sendPublicMessage;
     if (!!editMessage) {
       handleEditMessage();
     } else if (!!newMessage) {
-      isPrivate
-        ? sendPrivateMessage
-        : sendPublicMessage("new-message", {
-            roomId: roomId,
-            content: newMessage,
-            ReplyTo: !!replyId?.length ? replyId : null,
-          });
+      sendMessageIsPrivate("new-message", {
+        roomId: roomId,
+        content: newMessage,
+        ReplyTo: !!replyId?.length ? replyId : null,
+      });
 
       setReplyId("");
       setNewMessage("");
