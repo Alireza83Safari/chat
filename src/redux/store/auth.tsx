@@ -2,6 +2,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../services/axios";
 import { UserType } from "../../types/user.type";
+import { Navigate } from "react-router-dom";
 
 export const fetchUserProfile = createAsyncThunk<
   UserType,
@@ -11,7 +12,13 @@ export const fetchUserProfile = createAsyncThunk<
   try {
     const response = await axiosInstance.get("/user/api/v1/profile");
     return response.data.data;
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+
+    if (error?.response?.status === 401) {
+      <Navigate to="/login" />;
+    }
+  }
 });
 
 type AuthState = {
