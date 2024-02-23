@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import Message from "../Message/Message";
 import RoomHeader from "./RoomHeader";
 import SendMessage from "./SendMessage";
-import { RoomType } from "../../types/room.type";
-import { MessageType } from "../../types/message.type";
-import getRoomId from "../../hooks/getRoomId";
-import { useAppSelector } from "../../redux/store";
-import { sendPrivateMessage } from "../../services/socket";
+import { RoomType } from "../../../types/room.type";
+import { MessageType } from "../../../types/message.type";
+import getRoomId from "../../../hooks/getRoomId";
+import { useAppSelector } from "../../../redux/store";
+import { sendPrivateMessage } from "../../../services/socket";
 
 const ChatRoom: React.FC = () => {
   const { roomId } = getRoomId();

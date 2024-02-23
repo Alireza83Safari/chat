@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { IoMdSend } from "react-icons/io";
 import { FaReply } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
-import { sendPrivateMessage, sendPublicMessage } from "../../services/socket";
+import {
+  sendPrivateMessage,
+  sendPublicMessage,
+} from "../../../services/socket";
 import { CiEdit } from "react-icons/ci";
-import getRoomId from "../../hooks/getRoomId";
-import { useAppSelector } from "../../redux/store";
+import getRoomId from "../../../hooks/getRoomId";
+import { useAppSelector } from "../../../redux/store";
 
 interface SendMessageProps {
   replyId: string;

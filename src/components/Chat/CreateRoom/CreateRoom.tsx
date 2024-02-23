@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import Modal from "../Modal";
 import { MdOutlineGroup } from "react-icons/md";
 import CreatePublicRoom from "./CreatePublicRoom";
-import { axiosInstance } from "../../services/axios";
-import { FriendsType } from "../../types/friend.type";
+import { axiosInstance } from "../../../services/axios";
+import { FriendsType } from "../../../types/friend.type";
 import toast from "react-hot-toast";
 
 interface CreateRoomProps {

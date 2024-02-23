@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
 import { FaUser } from "react-icons/fa";
-import { axiosInstance } from "../services/axios";
+import { axiosInstance } from "../../services/axios";
 import toast from "react-hot-toast";
 
 interface CreateFriendModalProps {

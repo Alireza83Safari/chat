@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import toast from "react-hot-toast";
-import { axiosInstance } from "../services/axios";
-import { useAppSelector } from "../redux/store";
-import { FaOutdent } from "react-icons/fa";
+import { axiosInstance } from "../../services/axios";
+import { useAppSelector } from "../../redux/store";
 import { BiLogOut } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 

@@ -3,11 +3,11 @@ import { FaArrowLeft, FaBell, FaBellSlash, FaSignOutAlt } from "react-icons/fa";
 import { HiDotsVertical } from "react-icons/hi";
 import { MdReportGmailerrorred } from "react-icons/md";
 import toast from "react-hot-toast";
-import { axiosInstance } from "../../services/axios";
-import getRoomId from "../../hooks/getRoomId";
+import { axiosInstance } from "../../../services/axios";
+import getRoomId from "../../../hooks/getRoomId";
 import RoomInfoModal from "./RoomInfoModal";
-import { RoomType } from "../../types/room.type";
-import { useAppSelector } from "../../redux/store";
+import { RoomType } from "../../../types/room.type";
+import { useAppSelector } from "../../../redux/store";
 import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {

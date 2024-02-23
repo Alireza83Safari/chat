@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { FaEdit, FaRegClone, FaReply, FaTrashAlt } from "react-icons/fa";
-import { MessageType } from "../../types/message.type";
+import { MessageType } from "../../../types/message.type";
 import toast from "react-hot-toast";
 import { CiEdit } from "react-icons/ci";
-import getRoomId from "../../hooks/getRoomId";
-import { useAppSelector } from "../../redux/store";
-import { sendPrivateMessage, sendPublicMessage } from "../../services/socket";
-import { RoomType } from "../../types/room.type";
+import getRoomId from "../../../hooks/getRoomId";
+import { useAppSelector } from "../../../redux/store";
+import {
+  sendPrivateMessage,
+  sendPublicMessage,
+} from "../../../services/socket";
+import { RoomType } from "../../../types/room.type";
 
 interface MessageProps {
   message: MessageType;

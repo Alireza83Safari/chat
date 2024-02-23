@@ -16,7 +16,7 @@ import {
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { fetchUserProfile } from "../redux/store/auth";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/Chat/Sidebar";
 import { withAuth } from "../HOC/isAuth";
 
 const Chat = () => {

@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useTransition } from "react";
 import { Link, useLocation } from "react-router-dom";
 import CreateRoom from "../CreateRoom/CreateRoom";
-import { RoomType } from "../../types/room.type";
+import { RoomType } from "../../../types/room.type";
 import { FaSearch } from "react-icons/fa";
-import getRoomId from "../../hooks/getRoomId";
-import { axiosInstance } from "../../services/axios";
+import getRoomId from "../../../hooks/getRoomId";
+import { axiosInstance } from "../../../services/axios";
 import ProfileModal from "../ProfileModal";
-import { useAppSelector } from "../../redux/store";
-import { sendPublicMessage } from "../../services/socket";
+import { useAppSelector } from "../../../redux/store";
+import { sendPublicMessage } from "../../../services/socket";
 
 interface searchResultType {
   id: string;
@@ -116,9 +116,7 @@ const RoomsList: React.FC = () => {
               </div>
             )}
 
-            <p className="font-semibold text-xl ml-3">
-              {userInfo?.username}
-            </p>
+            <p className="font-semibold text-xl ml-3">{userInfo?.username}</p>
           </button>
         </div>
         {/* finish profile */}

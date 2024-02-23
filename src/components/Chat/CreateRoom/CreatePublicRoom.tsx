@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { axiosInstance } from "../../services/axios";
+import { axiosInstance } from "../../../services/axios";
 import toast from "react-hot-toast";
 
 interface CreateRoomInfo {
