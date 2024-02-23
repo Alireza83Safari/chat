@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { fetchUserProfile } from "../redux/store/auth";
 import Sidebar from "../components/Sidebar";
+import { withAuth } from "../HOC/isAuth";
 
 const Chat = () => {
   const dispatch = useAppDispatch();
@@ -111,6 +112,19 @@ const Chat = () => {
           );
           break;
 
+        case "watch-room":
+          console.log(content);
+          toast.success("sasda");
+          dispatch(saveRoom({ room: content.data }));
+          break;
+        /*     dispatch(fetchUserProfile());
+            dispatch(
+              updateRoomUserProfile({
+                roomId: content?.roomId,
+                updatedUserProfile: content?.data,
+              })
+            ); */
+
         case "seen-message":
           dispatch(seenMessage({ roomId: content?.roomId }));
           break;
@@ -158,11 +172,15 @@ const Chat = () => {
         socketHandler();
       }
     }, 5000);
-
     return () => {
       clearInterval(intervalId);
     };
   }, []);
+
+  useEffect(() => {
+    dispatch(fetchUserProfile());
+  }, []);
+
   return (
     <>
       <Sidebar />
@@ -172,4 +190,4 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+export default withAuth(Chat);
