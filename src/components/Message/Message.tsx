@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEdit, FaEye, FaRegClone, FaReply, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaRegClone, FaReply, FaTrashAlt } from "react-icons/fa";
 import { MessageType } from "../../types/message.type";
 import toast from "react-hot-toast";
 import { CiEdit } from "react-icons/ci";
@@ -7,7 +7,6 @@ import getRoomId from "../../hooks/getRoomId";
 import { useAppSelector } from "../../redux/store";
 import { sendPrivateMessage, sendPublicMessage } from "../../services/socket";
 import { RoomType } from "../../types/room.type";
-import { TiTick } from "react-icons/ti";
 
 interface MessageProps {
   message: MessageType;
@@ -23,7 +22,7 @@ const getUserAvatar = (user: any) => {
   if (hasProfile) {
     return (
       <img
-        className="max-w-12 max-h-12 object-contain rounded-full"
+        className="max-w-12 max-h-12 object-contain rounded-full sm:block hidden"
         src={String(user?.profile)}
       />
     );
@@ -128,16 +127,9 @@ const Message: React.FC<MessageProps> = ({
             {message?.isEdited && (
               <CiEdit className="text-xs text-orange-500" />
             )}
-            {roomInfo?.room?.isPrivate &&
-              message?.isSeen &&
-              message?.userId == userInfo?.id && (
-                <div className="flex items-center text-white text-sm mt-1">
-                  <img src="/image/tick.svg" />
-                </div>
-              )}
           </div>
 
-          {/* messgae menu */}
+          {/* start messgae menu */}
           <div
             className={`z-10 absolute ${
               isUser ? "-left-[10rem]" : "-right-[10rem]"
@@ -189,8 +181,13 @@ const Message: React.FC<MessageProps> = ({
               )}
             </ul>
           </div>
+          {/* finish messgae menu */}
         </div>
-        <div className="chat-footer opacity-50">Delivered</div>
+        <div className="chat-footer opacity-50">
+          {roomInfo?.room?.isPrivate &&
+            message?.isSeen &&
+            message?.userId == userInfo?.id && <p>seen</p>}
+        </div>
       </div>
     </div>
   );

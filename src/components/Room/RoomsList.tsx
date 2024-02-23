@@ -7,7 +7,7 @@ import getRoomId from "../../hooks/getRoomId";
 import { axiosInstance } from "../../services/axios";
 import ProfileModal from "../ProfileModal";
 import { useAppSelector } from "../../redux/store";
-import toast from "react-hot-toast";
+import { sendPublicMessage } from "../../services/socket";
 
 interface searchResultType {
   id: string;
@@ -37,11 +37,16 @@ const RoomsList: React.FC = () => {
   };
 
   const handleRoomJoin = async (roomId: string) => {
-    try {
+    sendPublicMessage("watch-room", {
+      roomId: roomId,
+      //  content: newMessage,
+      // ReplyTo: !!replyId?.length ? replyId : null,
+    });
+    /*    try {
       await axiosInstance.post(`/chat/api/v1/room/join/${roomId}`);
     } catch (error) {
       toast.error("You have already joined");
-    }
+    } */
   };
 
   useEffect(() => {
@@ -84,9 +89,15 @@ const RoomsList: React.FC = () => {
   const userInfo = useAppSelector((state) => state.auth.userInfo);
 
   const mapState = filterRooms?.length ? filterRooms : roomsArray;
+
   return (
-    <nav className="fixed top-0 md:left-[80px] bottom-0 min-h-screen lg:w-[240px] md:w-[200px] sm:w-[150px] w-[75px] overflow-y-auto bg-white">
+    <nav
+      className={`fixed top-0 left-[80px] bottom-0 min-h-screen lg:w-[240px] md:w-[200px] w-full overflow-y-auto bg-white ${
+        roomId ? `md:block hidden` : `block`
+      }`}
+    >
       <div className="sticky top-0 text-black min-w-full">
+        {/* start profile */}
         <div className="flex justify-between border-b border-gray-200 pb-6 pt-3 bg-white md:px-4 px-2">
           <button
             className="flex items-center"
@@ -105,19 +116,23 @@ const RoomsList: React.FC = () => {
               </div>
             )}
 
-            <p className="font-semibold text-xl ml-3 sm:block hidden">
+            <p className="font-semibold text-xl ml-3">
               {userInfo?.username}
             </p>
           </button>
         </div>
+        {/* finish profile */}
+
+        {/* start search room */}
         <div className="relative my-3 lg:mx-4 x-1 min-w-full">
           <input
             type="text"
-            className="bg-white py-2 pl-8 border sm:min-w-full w-[70px] outline-none rounded-lg z-30"
+            className="bg-white py-2 sm:pl-8 pl-6 border lg:w-[215px] md:w-[195px] sm:w-[88vw] w-[80vw] outline-none rounded-lg z-30 text-sm"
             value={searchQuery}
             onChange={handleChange}
+            placeholder="search"
           />
-          <FaSearch className="text-xl absolute left-2 text-indigo-600 top-3" />
+          <FaSearch className="sm:text-xl text-lg absolute sm:left-2 left-1 text-indigo-600 top-3" />
         </div>
         {isPending ? (
           <p className="mx-4">loading ....</p>
@@ -132,13 +147,16 @@ const RoomsList: React.FC = () => {
             </div>
           ))
         )}
+        {/* finish search room */}
       </div>
+
+      {/* start show room list */}
       {!searchQuery?.length ? (
         <div className="overflow-auto text-black">
           {mapState?.map((item: RoomType) => (
             <Link
               to={`/room?roomId=${item?.room?.id}`}
-              className={`sm:py-3 py-2 flex sm:justify-between justify-center sm:px-2 items-center ${
+              className={`sm:py-3 py-2 flex sm:justify-between pl-3 sm:px-2 items-center border-b ${
                 !!roomId && roomId === String(item?.room?.id)
                   ? `bg-indigo-100`
                   : ``
@@ -179,10 +197,7 @@ const RoomsList: React.FC = () => {
                   ""
                 )}
 
-                <div
-                  className="ml-2 lg:text-base text-sm sm:block hidden"
-                  dir="auto"
-                >
+                <div className="ml-2 lg:text-base text-sm" dir="auto">
                   <h2 className="font-semibold text-lg" dir="auto">
                     {item?.room?.isPrivate
                       ? item?.room?.users?.find(
@@ -202,6 +217,7 @@ const RoomsList: React.FC = () => {
       ) : (
         ""
       )}
+      {/* finish show room list */}
 
       <CreateRoom isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
       <ProfileModal

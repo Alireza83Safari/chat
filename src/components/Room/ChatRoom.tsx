@@ -56,12 +56,12 @@ const ChatRoom: React.FC = () => {
   }, [roomId, messages]);
 
   return (
-    <div className="bg-[#E9E9E9] fixed right-0 bottom-0 top-0 min-h-[20rem] w-full overflow-y-auto lg:pl-[320px] md:pl-[280px] sm:pl-[150px] pl-[75px] -z-10">
+    <div className="bg-[#E9E9E9] fixed right-0 bottom-0 top-0 min-h-[20rem] w-full overflow-y-auto lg:pl-[320px] md:pl-[280px] pl-[75px] -z-10">
       {!!roomId && (
         <>
           <RoomHeader roomInfos={roomsArray} />
           <div
-            className="container min-h-screen overflow-auto lg:px-3 "
+            className="container min-h-screen overflow-auto lg:px-3 px-2"
             ref={containerRef}
           >
             {messages?.map((message: MessageType, index) => (

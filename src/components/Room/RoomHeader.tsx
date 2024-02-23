@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaBell, FaBellSlash, FaSignOutAlt } from "react-icons/fa";
+import { FaArrowLeft, FaBell, FaBellSlash, FaSignOutAlt } from "react-icons/fa";
 import { HiDotsVertical } from "react-icons/hi";
 import { MdReportGmailerrorred } from "react-icons/md";
 import toast from "react-hot-toast";
@@ -8,12 +8,14 @@ import getRoomId from "../../hooks/getRoomId";
 import RoomInfoModal from "./RoomInfoModal";
 import { RoomType } from "../../types/room.type";
 import { useAppSelector } from "../../redux/store";
+import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   roomInfos: RoomType | undefined;
 }
 
 const RoomHeader: React.FC<HeaderProps> = ({ roomInfos }) => {
+  const navigate = useNavigate();
   const { roomId } = getRoomId();
   const [showMenu, setShowMenu] = useState(false);
   const userInfo = useAppSelector((state) => state.auth.userInfo);
@@ -45,10 +47,15 @@ const RoomHeader: React.FC<HeaderProps> = ({ roomInfos }) => {
       console.error("Error leaving room:", error);
     }
   };
-
   return (
     <>
-      <div className="flex justify-between items-center py-3 text-black-800 sm:px-3 sticky top-0 z-10 bg-[#F8F9FB] shadow-xl text-black">
+      <div className="flex justify-between items-center py-3 text-black-800 sm:px-3 sticky top-0 z-10 md:pl-2 sm:pl-12 pl-8 bg-[#F8F9FB] shadow-xl text-black">
+        <button
+          className="absolute left-3 text-indigo-600 md:hidden flex"
+          onClick={() => navigate("/room")}
+        >
+          <FaArrowLeft />
+        </button>
         <div
           className="flex items-center"
           onClick={() => setIsModalOpen(!isModalOpen)}

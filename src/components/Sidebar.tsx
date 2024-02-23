@@ -18,9 +18,9 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="fixed left-0 top-0 bottom-0 md:w-[80px] bg-warmGray-50 text-black md:block hidden z-20">
+      <div className="fixed left-0 top-0 bottom-0 w-[80px] bg-warmGray-50 text-black z-20">
         <ul className="menu bg-warmGray-50 text-indigo-600 rounded-box mx-0 px-0">
-          <li className="flex justify-center py-4">
+          <li className="flex justify-center py-4 border-b">
             <Link
               to="/room?q=all"
               className={`tooltip tooltip-right flex justify-center ${
@@ -32,7 +32,7 @@ const Sidebar = () => {
             </Link>
           </li>
 
-          <li className="flex justify-center py-4">
+          <li className="flex justify-center py-4 border-b">
             <Link
               to="/room?q=public"
               className={`tooltip tooltip-right flex justify-center ${
@@ -44,7 +44,7 @@ const Sidebar = () => {
             </Link>
           </li>
 
-          <li className="flex justify-center py-4">
+          <li className="flex justify-center py-4 border-b">
             <Link
               to="/room?q=private"
               className={`tooltip tooltip-right flex justify-center ${
@@ -57,7 +57,7 @@ const Sidebar = () => {
           </li>
 
           <li
-            className="flex justify-center py-4"
+            className="flex justify-center py-4 border-b"
             onClick={() => setShowCreateChat(true)}
           >
             <div
