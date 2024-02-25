@@ -1,7 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { axiosInstance } from "../services/axios";
-import toast from "react-hot-toast";
 import { useAppDispatch } from "../redux/store";
 import { fetchUserProfile } from "../redux/store/auth";
 
@@ -30,9 +29,9 @@ const Login: React.FC = () => {
       const data = await axiosInstance.post(`/auth/api/v1/login`, loginData);
 
       if (data.status === 200) {
-        toast.success("login is successfully");
         navigate("/room");
         dispatch(fetchUserProfile());
+        window.location.reload();
       }
     } catch (error) {
       setErrorMessage((error as any)?.response?.data?.message);
