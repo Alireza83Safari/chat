@@ -1,4 +1,3 @@
-// authSlice.ts
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../services/axios";
 import { UserType } from "../../types/user.type";
@@ -13,9 +12,7 @@ export const fetchUserProfile = createAsyncThunk<
     const response = await axiosInstance.get("/user/api/v1/profile");
     return response.data.data;
   } catch (error) {
-    console.log(error);
-
-    if (error?.response?.status === 401) {
+    if ((error as any)?.response?.status === 401) {
       <Navigate to="/login" />;
     }
   }
@@ -23,14 +20,14 @@ export const fetchUserProfile = createAsyncThunk<
 
 type AuthState = {
   isLoggedIn: boolean;
-  userInfo: UserType | null;
+  userInfo: UserType | any;
   isLoading: boolean;
   error: string | null;
 };
 
 const initialState: AuthState = {
   isLoggedIn: false,
-  userInfo: null,
+  userInfo: "",
   isLoading: false,
   error: null,
 };
@@ -41,16 +38,15 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUserProfile.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
+
       .addCase(fetchUserProfile.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isLoggedIn = true;
+        state.isLoggedIn = action.payload === undefined ? false : true;
         state.userInfo = action.payload;
       })
       .addCase(fetchUserProfile.rejected, (state, action) => {
+        console.log(action.payload);
+
         state.isLoading = false;
         state.isLoggedIn = false;
         state.error = action.payload as string;

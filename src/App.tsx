@@ -6,18 +6,17 @@ import { useAppSelector } from "./redux/store";
 
 export default function App() {
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-  const history = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    if (isLoggedIn && location.pathname === "/") {
+    if (location.pathname == "/") {
       navigate("/room");
-    } else if (!isLoggedIn && location.pathname === "/") {
-      navigate("/login");
     }
-  }, [history]);
+  }, [location?.search, isLoggedIn]);
 
   const router = useRoutes(routes);
+
   return (
     <>
       {router}

@@ -17,7 +17,6 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { fetchUserProfile } from "../redux/store/auth";
 import Sidebar from "../components/Chat/Sidebar";
-import { withAuth } from "../HOC/isAuth";
 
 const Chat = () => {
   const dispatch = useAppDispatch();
@@ -113,7 +112,6 @@ const Chat = () => {
           break;
 
         case "watch-room":
-          console.log(content);
           toast.success("sasda");
           dispatch(saveRoom({ room: content.data }));
           break;
@@ -164,18 +162,16 @@ const Chat = () => {
         privateSocket.readyState === WebSocket.OPEN ||
         publicSocket.readyState === WebSocket.OPEN
       ) {
-        setIsSocketConnected(
-          privateSocket.readyState === WebSocket.OPEN ||
-            publicSocket.readyState === WebSocket.OPEN
-        );
+        dispatch(setIsSocketConnected(true));
       } else {
         socketHandler();
       }
     }, 5000);
+
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [privateSocket.readyState, publicSocket.readyState]);
 
   useEffect(() => {
     dispatch(fetchUserProfile());
@@ -190,4 +186,4 @@ const Chat = () => {
   );
 };
 
-export default withAuth(Chat);
+export default Chat;
