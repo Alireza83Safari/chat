@@ -56,7 +56,7 @@ const ChatRoom: React.FC = () => {
   }, [roomId, messages]);
 
   return (
-    <div className="bg-[#E9E9E9] fixed right-0 bottom-0 top-0 min-h-[20rem] w-full overflow-y-auto lg:pl-[320px] md:pl-[280px] pl-[75px] -z-10">
+    <div className="bg-[#E9E9E9] fixed right-0 bottom-0 top-0 min-h-[20rem] w-full overflow-y-auto lg:pl-[375px] md:pl-[340px] pl-[75px] -z-10">
       {!!roomId && (
         <>
           <RoomHeader roomInfos={roomsArray} />

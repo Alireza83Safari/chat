@@ -2,7 +2,6 @@ import React, { useEffect, useState, useTransition } from "react";
 import { Link, useLocation } from "react-router-dom";
 import CreateRoom from "../CreateRoom/CreateRoom";
 import { RoomType } from "../../../types/room.type";
-import { FaSearch } from "react-icons/fa";
 import getRoomId from "../../../hooks/getRoomId";
 import { axiosInstance } from "../../../services/axios";
 import ProfileModal from "../ProfileModal";
@@ -40,7 +39,6 @@ const RoomsList: React.FC = () => {
     sendPublicMessage("watch-room", {
       roomId: roomId,
       //  content: newMessage,
-      // ReplyTo: !!replyId?.length ? replyId : null,
     });
     /*    try {
       await axiosInstance.post(`/chat/api/v1/room/join/${roomId}`);
@@ -89,10 +87,11 @@ const RoomsList: React.FC = () => {
   const userInfo = useAppSelector((state) => state.auth.userInfo);
 
   const mapState = filterRooms?.length ? filterRooms : roomsArray;
+  //className={`fixed top-0 left-[80px] bottom-0 min-h-screen lg:w-[240px] md:w-[200px] w-full overflow-y-auto bg-white ${
 
   return (
     <nav
-      className={`fixed top-0 left-[80px] bottom-0 min-h-screen lg:w-[240px] md:w-[200px] w-full overflow-y-auto bg-white ${
+      className={`fixed top-0 left-[80px] bottom-0 min-h-screen lg:w-[300px] md:w-[260px] w-full overflow-y-auto bg-white ${
         roomId ? `md:block hidden` : `block`
       }`}
     >
@@ -106,10 +105,10 @@ const RoomsList: React.FC = () => {
             {userInfo?.profile ? (
               <img
                 src={String(userInfo?.profile)}
-                className="w-12 h-12 rounded-full"
+                className="min-w-12 h-12 rounded-full"
               />
             ) : (
-              <div className="w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
+              <div className="min-w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
                 <p className="text-2xl text-white">
                   {userInfo?.username?.slice(0, 1)}
                 </p>
@@ -122,15 +121,14 @@ const RoomsList: React.FC = () => {
         {/* finish profile */}
 
         {/* start search room */}
-        <div className="relative my-3 lg:mx-4 x-1 min-w-full">
+        <div className="relative my-3 lg:px-4 x-1 min-w-full bg-white pb-2">
           <input
             type="text"
-            className="bg-white py-2 sm:pl-8 pl-6 border lg:w-[215px] md:w-[195px] sm:w-[88vw] w-[80vw] outline-none rounded-lg z-30 text-sm"
+            className="py-2 pl-3 bg-gray-100 border lg:w-[270px] md:w-[255px] sm:w-[88vw] w-[80vw] outline-none rounded-xl z-30 text-sm"
             value={searchQuery}
             onChange={handleChange}
             placeholder="search"
           />
-          <FaSearch className="sm:text-xl text-lg absolute sm:left-2 left-1 text-indigo-600 top-3" />
         </div>
         {isPending ? (
           <p className="mx-4">loading ....</p>
@@ -171,9 +169,9 @@ const RoomsList: React.FC = () => {
                         (user) => user?.id !== userInfo?.id
                       )?.profile
                     }
-                    className="w-12 h-12 rounded-full border"
+                    className="min-w-12 h-12 rounded-full border"
                   />
-                ) : <div className="w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
+                ) : <div className="min-w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
                     <p className="text-2xl text-white">
                       {item?.room?.name.slice(0, 1)}
                     </p>
@@ -181,11 +179,11 @@ const RoomsList: React.FC = () => {
                   item?.room?.avatar?.length ? (
                     <img
                       src={item?.room?.avatar || ""}
-                      className="w-12 h-12 rounded-full"
+                      className="min-w-12 h-12 rounded-full"
                       alt="Room Avatar"
                     />
                   ) : (
-                    <div className="w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
+                    <div className="min-w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
                       <p className="text-2xl text-white">
                         {item?.room?.name.slice(0, 1)}
                       </p>
@@ -195,14 +193,26 @@ const RoomsList: React.FC = () => {
                   ""
                 )}
 
-                <div className="ml-2 lg:text-base text-sm" dir="auto">
-                  <h2 className="font-semibold text-lg" dir="auto">
-                    {item?.room?.isPrivate
-                      ? item?.room?.users?.find(
-                          (user) => user?.id !== userInfo?.id
-                        )?.username
-                      : item?.room?.name || "Default Name"}
-                  </h2>
+                <div
+                  className="ml-2 lg:text-base text-sm min-w-full"
+                  dir="auto"
+                >
+                  <div className="flex justify-between min-w-full">
+                    <h2 className="text-lg relative" dir="auto">
+                      {item?.room?.isPrivate
+                        ? item?.room?.users?.find(
+                            (user) => user?.id !== userInfo?.id
+                          )?.username
+                        : item?.room?.name || "Default Name"}
+                    </h2>
+                    <p className="absolute right-3">
+                      {!!item?.messages?.length &&
+                        item?.messages[
+                          item.messages.length - 1
+                        ]?.createdAt?.slice(11, 16)}
+                    </p>
+                  </div>
+
                   <p>
                     {!!item?.messages?.length &&
                       item?.messages[item.messages.length - 1]?.content}

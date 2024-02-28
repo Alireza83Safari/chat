@@ -8,6 +8,7 @@ import { UserType } from "../../../types/user.type";
 import { useNavigate } from "react-router-dom";
 import { FaUserGroup } from "react-icons/fa6";
 import toast from "react-hot-toast";
+import { useAppSelector } from "../../../redux/store";
 interface RoomInfoModalProps {
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,6 +23,7 @@ const RoomInfoModal: React.FC<RoomInfoModalProps> = ({
   const { roomId } = getRoomId();
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState() as any;
+  const userInfo = useAppSelector((state) => state.auth?.userInfo);
 
   const deleteChatHandler = async () => {
     const res = await axiosInstance.post(`/chat/api/v1/room/delete/${roomId}`);
@@ -83,7 +85,7 @@ const RoomInfoModal: React.FC<RoomInfoModalProps> = ({
                       : room?.avatar
                   }
                   alt="profile"
-                  className="w-20 h-20 rounded-full"
+                  className="w-20 h-20 p-1 rounded-full"
                 />
               ) : (
                 <div className="px-3 py-5 w-16 h-16 rounded-full flex justify-center items-center bg-pink-500">
@@ -97,27 +99,30 @@ const RoomInfoModal: React.FC<RoomInfoModalProps> = ({
                 id="imageUpload"
                 accept="image/*"
                 className="hidden"
-                onChange={(e) => setSelectedImage(e.target.files[0])}
+                onChange={(e) => setSelectedImage(e.target.files)}
               />
             </label>
           </div>
           <div className="px-3 py-5 ml-4">
-            <h1 className="text-lg font-semibold">{room?.name}</h1>
+            <h1 className="text-lg font-semibold">
+              {room?.isPrivate
+                ? room?.users?.find((user: UserType) => user?.id !== userInfo)
+                    ?.username
+                : room?.name}
+            </h1>
             <p>last seen recently</p>
           </div>
         </div>
 
-        <div className="hover:bg-[#DFE7FF] duration-300">
-          <div className="px-3 pb-2 flex items-center">
-            <FaUserGroup className="text-2xl my-4" />
-            <p className="ml-4 font-semibold"> {room?.users?.length} members</p>
-          </div>
+        <div className="px-3 pb-2 flex items-center">
+          <FaUserGroup className="text-2xl my-4" />
+          <p className="ml-4 font-semibold"> {room?.users?.length} members</p>
         </div>
 
         <div className="border-t">
           {room?.users?.map((user: UserType) => (
             <div
-              className="border-b pb-3 hover:bg-[#DFE7FF] duration-300"
+              className="border-b pb-3 my-2 hover:bg-[#DFE7FF] duration-300"
               key={user?.id}
             >
               <div
@@ -125,7 +130,7 @@ const RoomInfoModal: React.FC<RoomInfoModalProps> = ({
                 onClick={() => createRoomHandler(user?.id)}
               >
                 {!user?.profile?.length ? (
-                  <div className="w-12 h-12 my-2 rounded-full bg-pink-500 flex justify-center items-center">
+                  <div className="w-11 h-11 p-1 rounded-full bg-pink-500 flex justify-center items-center">
                     <p className="text-2xl text-white">
                       {user.username?.slice(0, 1)}
                     </p>
@@ -133,7 +138,7 @@ const RoomInfoModal: React.FC<RoomInfoModalProps> = ({
                 ) : (
                   <img
                     src={user?.profile}
-                    className="w-12 h-12 rounded-full object-contain"
+                    className="w-12 h-12 rounded-full object-contain p-1"
                   />
                 )}
                 <div className="ml-2">{user.username}</div>

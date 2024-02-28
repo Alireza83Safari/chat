@@ -67,7 +67,7 @@ const RoomHeader: React.FC<HeaderProps> = ({ roomInfos }) => {
               src={
                 room?.users?.find((user) => user?.id !== userInfo?.id)?.profile
               }
-              className="w-12 h-12 rounded-full"
+              className="w-12 h-12 p-1 rounded-full object-contain"
               alt="Room Avatar"
             />
           ) : room?.avatar?.length ? (
