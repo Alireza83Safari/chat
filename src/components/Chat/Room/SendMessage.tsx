@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoMdSend } from "react-icons/io";
 import { FaReply } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
@@ -9,6 +9,8 @@ import {
 import { CiEdit } from "react-icons/ci";
 import getRoomId from "../../../hooks/getRoomId";
 import { useAppSelector } from "../../../redux/store";
+import { GoPaperclip } from "react-icons/go";
+import { axiosInstance } from "../../../services/axios";
 
 interface SendMessageProps {
   replyId: string;
@@ -31,6 +33,28 @@ const SendMessage: React.FC<SendMessageProps> = ({
 }) => {
   const [newMessage, setNewMessage] = useState("");
   const { roomId } = getRoomId();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleToggleFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileUpload = async (file: File) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await axiosInstance.post(
+        `/media/api/v1/upload/room/file-message/${roomId}`,
+        formData
+      );
+      console.log(response);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
 
   useEffect(() => {
     if (roomId) {
@@ -115,9 +139,28 @@ const SendMessage: React.FC<SendMessageProps> = ({
       )}
 
       <div className="flex relative">
+        <button
+          className="focus:outline-none absolute sm:left-2 right-0 top-2"
+          onClick={handleToggleFileInput}
+        >
+          <GoPaperclip className="text-3xl text-black" />
+        </button>
+
+        <input
+          type="file"
+          accept="image/*"
+          className="hidden"
+          ref={fileInputRef}
+          onChange={(e) => {
+            const selectedFile = e.target.files?.[0];
+            if (selectedFile) {
+              handleFileUpload(selectedFile);
+            }
+          }}
+        />
         <input
           type="text"
-          className="flex-grow min-w-full px-3 py-3 rounded-md focus:outline-none bg-white pr-12 text-black"
+          className="flex-grow min-w-full px-3 py-3 rounded-md focus:outline-none bg-white pr-12 pl-12 text-black"
           placeholder="Type your message..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
