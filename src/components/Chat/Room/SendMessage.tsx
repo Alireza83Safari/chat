@@ -46,14 +46,11 @@ const SendMessage: React.FC<SendMessageProps> = ({
       const formData = new FormData();
       formData.append("file", file);
 
-      const response = await axiosInstance.post(
-        `/media/api/v1/upload/room/file-message/${roomId}`,
+      await axiosInstance.post(
+        `/media/api/v1/attachment/upload/room/file-message/${roomId}`,
         formData
       );
-      console.log(response);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
