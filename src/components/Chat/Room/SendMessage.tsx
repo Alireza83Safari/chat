@@ -136,25 +136,27 @@ const SendMessage: React.FC<SendMessageProps> = ({
       )}
 
       <div className="flex relative">
-        <button
-          className="focus:outline-none absolute sm:left-2 right-0 top-2"
-          onClick={handleToggleFileInput}
-        >
-          <GoPaperclip className="text-3xl text-black" />
-        </button>
+        <div className=" absolute sm:left-2 right-0 top-2 max-w-8">
+          <button
+            className="focus:outline-none"
+            onClick={handleToggleFileInput}
+          >
+            <GoPaperclip className="text-3xl text-black" />
+          </button>
 
-        <input
-          type="file"
-          accept="image/*"
-          className="hidden"
-          ref={fileInputRef}
-          onChange={(e) => {
-            const selectedFile = e.target.files?.[0];
-            if (selectedFile) {
-              handleFileUpload(selectedFile);
-            }
-          }}
-        />
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            ref={fileInputRef}
+            onChange={(e) => {
+              const selectedFile = e.target.files?.[0];
+              if (selectedFile) {
+                handleFileUpload(selectedFile);
+              }
+            }}
+          />
+        </div>
         <input
           type="text"
           className="flex-grow min-w-full px-3 py-3 rounded-md focus:outline-none bg-white pr-12 pl-12 text-black"
